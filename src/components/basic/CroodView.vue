@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import useMousePosition from '../hooks/useMousePositon';
+import useMousePosition from '../../hooks/useMousePositon';
 const { x, y } = useMousePosition()
 </script>
 
