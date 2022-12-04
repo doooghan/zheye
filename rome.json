@@ -1,0 +1,11 @@
+{
+  "linter": {
+    "enabled": true,
+    "rules": {
+      "correctness": {
+        "noDebugger": "error",
+        "noSparseArray": "warn"
+      }
+    }
+  }
+}
