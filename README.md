@@ -2,4 +2,4 @@
 
 ## 技术栈
 
-vue3 + ts + vite + pnpm + rome + axios
+vue3 + ts + vite + pnpm + rome + axios + bootstrap

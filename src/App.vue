@@ -1,13 +1,26 @@
 <script setup lang="ts">
+import ColumnListVue, { ColumnProps } from './components/ColumnList.vue';
 
+const testData: ColumnProps[] = [
+  {
+    id: 1,
+    title: "test1",
+    avater: "/vite.svg",
+    descript: "这是一段描述。这是一段描述。这是一段描述。这是一段描述。这是一段描述。这是一段描述。"
+  },
+  {
+    id: 2,
+    title: "test2",
+    avater: "/vite.svg",
+    descript: "这是一段描述。这是一段描述。这是一段描述。这是一段描述。这是一段描述。这是一段描述。"
+  }
+]
 </script>
 
 <template>
-  <div>
-    <img src="/vite.svg" class="logo" alt="Vite logo" />
-    <img src="./assets/vue.svg" class="logo vue" alt="Vue logo" />
+  <div class="container">
+    <ColumnListVue :list="testData" />
   </div>
-  <button>start</button>
 </template>
 
 <style scoped>
