@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { ref, toRefs } from 'vue';
 
-// 使用实验性语法，可选的disabled，默认为false，且响应性结构
+// 使用实验性语法，可选的disabled，默认为false，且具有响应性结构
+// 也可以用 withDefaults
 const { disabled = false } = defineProps<{ disabled?: boolean }>()
 
 </script>

@@ -1,25 +1,19 @@
 <script setup lang="ts">
-import { onMounted, onUnmounted, ref, toRefs } from 'vue';
+import { onMounted, onUnmounted, ref, toRefs, watch } from 'vue';
+import useClickOutside from '../hooks/useClickOutside'
 
 const props = defineProps<{ title: string }>()
 const isOpen = ref(false)
-const dropdownRef = ref<HTMLElement | null>(null)
 const toggleOpen = () => {
   isOpen.value = !isOpen.value
 }
 
-const handler = (e: MouseEvent) => {
-  if (dropdownRef.value) {
-    if (!dropdownRef.value.contains(e.target as HTMLElement) && isOpen.value) {
-      isOpen.value = false
-    }
+const dropdownRef = ref<HTMLElement | null>(null)
+const isClickOutside = useClickOutside(dropdownRef)
+watch(isClickOutside, () => {
+  if (isOpen.value && isClickOutside.value) {
+    isOpen.value = false
   }
-}
-onMounted(() => {
-  document.addEventListener('click', handler)
-})
-onUnmounted(() => {
-  document.removeEventListener('click', handler)
 })
 
 const { title } = toRefs(props)
