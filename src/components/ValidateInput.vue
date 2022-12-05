@@ -10,6 +10,7 @@ import { reactive, useAttrs } from 'vue';
 export interface RuleProp {
   type: 'require' | 'email' | 'range'
   message: string
+  length?: number
 }
 export type RulesProp = RuleProp[]
 
@@ -37,7 +38,7 @@ const validateInput = () => {
           passed = emailReg.test(inputRef.val)
           break;
         case "range":
-          passed = inputRef.val.length > 6
+          passed = inputRef.val.length > (rule.length || 6)
           break
         default:
           break;

@@ -2,6 +2,7 @@
 import ColumnList, { ColumnProps } from './components/ColumnList.vue';
 import GlobalHeader, { UserProps } from './components/GlobalHeader.vue';
 import ValidateInputVue, { RulesProp } from './components/ValidateInput.vue';
+import ValidateFormVue from './components/ValidateForm.vue';
 import vueSvg from './assets/vue.svg'
 import { reactive, ref } from 'vue';
 
@@ -19,8 +20,12 @@ const emailRules: RulesProp = [
 const passwordVal = ref('')
 const passwordRules: RulesProp = [
   { type: 'require', message: '密码不能为空' },
-  { type: 'range', message: '长度必须大于6' },
+  { type: 'range', length: 7, message: '长度必须大于7' },
 ]
+
+const onFormSubmit = (result: boolean) => {
+  console.log('submit', result)
+}
 
 const testData: ColumnProps[] = [
   {
@@ -54,7 +59,7 @@ const testData: ColumnProps[] = [
   <div class="container">
     <GlobalHeader :user="currentUser" />
     <!-- <ColumnList :list="testData" /> -->
-    <form>
+    <ValidateFormVue @form-submit="onFormSubmit">
       <div class="mb-3">
         <label class="form-label">邮箱地址</label>
         <ValidateInputVue type="text" placeholder="请填入邮箱地址" :rules="emailRules" v-model="emailVal" />
@@ -64,7 +69,10 @@ const testData: ColumnProps[] = [
         <label class="form-label">密码</label>
         <ValidateInputVue type="password" placeholder="请输入密码" :rules="passwordRules" v-model="passwordVal" />
       </div>
-    </form>
+      <template #submit>
+        <button type="submit" class="btn btn-danger">submit</button>
+      </template>
+    </ValidateFormVue>
   </div>
 </template>
 
