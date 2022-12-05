@@ -8,12 +8,13 @@ export interface RuleProp {
 export type RulesProp = RuleProp[]
 
 
-const props = defineProps<{ rules: RulesProp }>()
+const props = defineProps<{ rules: RulesProp, modelValue: string }>()
+const emits = defineEmits<{ (e: 'update:modelValue', val: string): void }>()
 
 const emailReg = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
 
 const inputRef = reactive({
-  val: '',
+  val: props.modelValue || '',
   error: false,
   message: ''
 })
@@ -39,12 +40,17 @@ const validateInput = () => {
     inputRef.error = !allPassed
   }
 }
+const updateValue = (e: Event) => {
+  const targetValue = (e.target as HTMLInputElement).value
+  inputRef.val = targetValue
+  emits('update:modelValue', targetValue)
+}
 </script>
 
 <template>
   <div class="validate-input-container pb-3">
-    <input type="text" class="form-control" :class="{ 'is-invalid': inputRef.error }" v-model="inputRef.val"
-      @blur="validateInput">
+    <input type="text" class="form-control" :class="{ 'is-invalid': inputRef.error }" :value="inputRef.val"
+      @input="updateValue" @blur="validateInput">
     <div class="invalid-feedback" v-if="inputRef.error">
       {{ inputRef.message }}
     </div>
