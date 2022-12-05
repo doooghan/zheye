@@ -1,6 +1,14 @@
 <script setup lang="ts">
-import ColumnListVue, { ColumnProps } from './components/ColumnList.vue';
+import ColumnList, { ColumnProps } from './components/ColumnList.vue';
+import GlobalHeader, { UserProps } from './components/GlobalHeader.vue';
 import vueSvg from './assets/vue.svg'
+
+const currentUser: UserProps = {
+  isLogin: true,
+  name: 'hhh',
+  id: 123
+}
+
 
 const testData: ColumnProps[] = [
   {
@@ -32,7 +40,8 @@ const testData: ColumnProps[] = [
 
 <template>
   <div class="container">
-    <ColumnListVue :list="testData" />
+    <GlobalHeader :user="currentUser" />
+    <ColumnList :list="testData" />
   </div>
 </template>
 

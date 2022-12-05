@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, toRefs } from 'vue';
+import { computed } from 'vue';
 import defaultAvatar from '../assets/column.jpg'
 
 export interface ColumnProps {
