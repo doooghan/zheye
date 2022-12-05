@@ -1,12 +1,17 @@
+<script lang="ts">
+// 使用普通的 <script> 来声明选项
+export default {
+  inheritAttrs: false
+}
+</script>
 <script setup lang="ts">
-import { reactive } from 'vue';
+import { reactive, useAttrs } from 'vue';
 
 export interface RuleProp {
   type: 'require' | 'email'
   message: string
 }
 export type RulesProp = RuleProp[]
-
 
 const props = defineProps<{ rules: RulesProp, modelValue: string }>()
 const emits = defineEmits<{ (e: 'update:modelValue', val: string): void }>()
@@ -49,8 +54,8 @@ const updateValue = (e: Event) => {
 
 <template>
   <div class="validate-input-container pb-3">
-    <input type="text" class="form-control" :class="{ 'is-invalid': inputRef.error }" :value="inputRef.val"
-      @input="updateValue" @blur="validateInput">
+    <input class="form-control" :class="{ 'is-invalid': inputRef.error }" :value="inputRef.val" @input="updateValue"
+      @blur="validateInput" v-bind="$attrs">
     <div class="invalid-feedback" v-if="inputRef.error">
       {{ inputRef.message }}
     </div>

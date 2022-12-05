@@ -11,7 +11,7 @@ const currentUser: UserProps = {
   id: 123
 }
 
-const emailVal = ref('viking')
+const emailVal = ref('')
 const emailRules: RulesProp = [
   { type: 'require', message: '电子邮箱不能为空' },
   { type: 'email', message: '请输入有效的邮箱' },
@@ -67,8 +67,7 @@ const testData: ColumnProps[] = [
     <form>
       <div class="mb-3">
         <label class="form-label">邮箱地址</label>
-        <ValidateInputVue :rules="emailRules" v-model="emailVal" />
-        {{ emailVal }}
+        <ValidateInputVue type="text" placeholder="填入邮箱地址" :rules="emailRules" v-model="emailVal" />
       </div>
       <div class="mb-3">
         <label for="exampleInputEmail1" class="form-label">邮箱</label>
