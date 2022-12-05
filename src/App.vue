@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import ColumnList, { ColumnProps } from './components/ColumnList.vue';
 import GlobalHeader, { UserProps } from './components/GlobalHeader.vue';
+import ValidateInputVue, { RulesProp } from './components/ValidateInput.vue';
 import vueSvg from './assets/vue.svg'
 import { reactive } from 'vue';
 
@@ -9,6 +10,11 @@ const currentUser: UserProps = {
   name: 'hhh',
   id: 123
 }
+
+const emailRules: RulesProp = [
+  { type: 'require', message: '电子邮箱不能为空' },
+  { type: 'email', message: '请输入有效的邮箱' },
+]
 
 const emailReg = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
 const emailRef = reactive({
@@ -19,7 +25,7 @@ const emailRef = reactive({
 const validateEmail = () => {
   if (emailRef.val.trim() === '') {
     emailRef.error = true
-    emailRef.message = '请输入邮箱'
+    emailRef.message = '电子邮箱不能为空'
   } else if (!emailReg.test(emailRef.val)) {
     emailRef.error = true
     emailRef.message = '请输入有效的邮箱'
@@ -58,6 +64,10 @@ const testData: ColumnProps[] = [
     <GlobalHeader :user="currentUser" />
     <!-- <ColumnList :list="testData" /> -->
     <form>
+      <div class="mb-3">
+        <label class="form-label">邮箱地址</label>
+        <ValidateInputVue :rules="emailRules" />
+      </div>
       <div class="mb-3">
         <label for="exampleInputEmail1" class="form-label">邮箱</label>
         <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
