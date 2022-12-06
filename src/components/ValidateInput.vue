@@ -6,6 +6,7 @@ export default {
 </script>
 <script setup lang="ts">
 import { reactive, useAttrs } from 'vue';
+import { emitter } from '../mitt'
 
 export interface RuleProp {
   type: 'require' | 'email' | 'range'
@@ -56,6 +57,8 @@ const updateValue = (e: Event) => {
   inputRef.val = targetValue
   emits('update:modelValue', targetValue)
 }
+
+emitter.emit('form-item-created', inputRef.val)
 
 defineExpose({
   validateInput

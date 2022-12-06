@@ -23,9 +23,8 @@ const passwordRules: RulesProp = [
   { type: 'range', length: 7, message: '长度必须大于7' },
 ]
 const child = ref(null)
-console.log(child)
 const onFormSubmit = (isValid: boolean) => {
-  console.log('submit', child.value.validateInput())
+  console.log('submit', isValid)
 }
 
 const testData: ColumnProps[] = [
