@@ -22,9 +22,10 @@ const passwordRules: RulesProp = [
   { type: 'require', message: '密码不能为空' },
   { type: 'range', length: 7, message: '长度必须大于7' },
 ]
-
-const onFormSubmit = (result: boolean) => {
-  console.log('submit', result)
+const child = ref(null)
+console.log(child)
+const onFormSubmit = (isValid: boolean) => {
+  console.log('submit', child.value.validateInput())
 }
 
 const testData: ColumnProps[] = [
@@ -62,7 +63,7 @@ const testData: ColumnProps[] = [
     <ValidateFormVue @form-submit="onFormSubmit">
       <div class="mb-3">
         <label class="form-label">邮箱地址</label>
-        <ValidateInputVue type="text" placeholder="请填入邮箱地址" :rules="emailRules" v-model="emailVal" />
+        <ValidateInputVue ref="child" type="text" placeholder="请填入邮箱地址" :rules="emailRules" v-model="emailVal" />
       </div>
 
       <div class="mb-3">

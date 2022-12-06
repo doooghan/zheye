@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const emits = defineEmits<{ (e: 'form-submit', result: boolean): void }>()
+const emits = defineEmits<{ (e: 'form-submit', isValid: boolean): void }>()
 const submitForm = () => {
   emits("form-submit", true)
 }

@@ -47,13 +47,19 @@ const validateInput = () => {
       return passed
     })
     inputRef.error = !allPassed
+    return allPassed
   }
+  return true
 }
 const updateValue = (e: Event) => {
   const targetValue = (e.target as HTMLInputElement).value
   inputRef.val = targetValue
   emits('update:modelValue', targetValue)
 }
+
+defineExpose({
+  validateInput
+})
 </script>
 
 <template>
