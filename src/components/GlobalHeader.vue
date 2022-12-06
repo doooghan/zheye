@@ -2,6 +2,7 @@
 import { toRefs } from 'vue';
 import DropDownVue from './DropDown.vue';
 import DropDownItemVue from './DropDownItem.vue';
+import { RouterLink } from 'vue-router';
 
 export interface UserProps {
   isLogin: boolean
@@ -15,10 +16,14 @@ const { user } = toRefs(props)
 
 <template>
   <nav class="navbar navbar-dark bg-primary justify-content-between mb-4 px-4">
-    <a class="navbar-brand" href="#">着也专栏</a>
+    <RouterLink to="/" class="navbar-brand">者也专栏</RouterLink>
     <ul v-if="!user.isLogin" class="list-inline mb-0">
-      <li class="list-inline-item"><a href="#" class="btn btn-outline-light my-2" type="submit">登录</a></li>
-      <li class="list-inline-item"><a href="#" class="btn btn-outline-light my-2" type="submit">注册</a></li>
+      <li class="list-inline-item">
+        <RouterLink to="/login" class="btn btn-outline-light my-2" type="submit">登录</RouterLink>
+      </li>
+      <li class="list-inline-item">
+        <RouterLink to="/login" class="btn btn-outline-light my-2" type="submit">注册</RouterLink>
+      </li>
     </ul>
     <ul v-else class="list-inline mb-0">
       <li class="list-inline-item">
