@@ -2,20 +2,26 @@
 import ValidateInputVue, { RulesProp } from '../components/ValidateInput.vue';
 import ValidateFormVue from '../components/ValidateForm.vue';
 import { ref } from 'vue';
+import { useRouter } from 'vue-router';
 
-const emailVal = ref('')
+const emailVal = ref('ddd@163.com')
 const emailRules: RulesProp = [
   { type: 'require', message: '电子邮箱不能为空' },
   { type: 'email', message: '请输入有效的邮箱' },
 ]
-const passwordVal = ref('')
+const passwordVal = ref('1234567')
 const passwordRules: RulesProp = [
   { type: 'require', message: '密码不能为空' },
   { type: 'range', length: 7, message: '长度必须大于7' },
 ]
 
+const router = useRouter()
+
 const onFormSubmit = (isValid: boolean) => {
   console.log('submit', isValid)
+  if (isValid) {
+    router.push({ name: 'ColumnDetail', params: { id: 2 } })
+  }
 }
 
 </script>

@@ -3,7 +3,7 @@ import { RouterView } from 'vue-router';
 import GlobalHeader, { UserProps } from './components/GlobalHeader.vue';
 
 const currentUser: UserProps = {
-  isLogin: true,
+  isLogin: false,
   name: 'hhh',
   id: 123
 }

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue';
+import { RouterLink } from "vue-router";
 import defaultAvatar from '../assets/column.jpg'
 
 export interface ColumnProps {
@@ -29,7 +30,7 @@ const columnList = computed(() => {
           <img :src="column.avatar" :alt="column.title" class="rounded-circle border border-light my-3">
           <h5 class="card-title">{{ column.title }}</h5>
           <p class="card-text text-left">{{ column.description }}</p>
-          <a href="#" class="btn btn-outline-primary">进入专栏</a>
+          <RouterLink :to="`/column/${column.id}`" class="btn btn-outline-primary">进入专栏</RouterLink>
         </div>
       </div>
 
