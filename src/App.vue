@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { RouterView } from 'vue-router';
-import GlobalHeader, { UserProps } from './components/GlobalHeader.vue';
+import GlobalHeader, { UserProps } from '@/components/GlobalHeader.vue';
 
 const currentUser: UserProps = {
   isLogin: false,

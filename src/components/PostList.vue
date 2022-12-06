@@ -1,8 +1,5 @@
 <script setup lang="ts">
-import { useRoute } from "vue-router";
-import { testData, testPosts } from '../testData'
-import defaultAvatar from '../assets/column.jpg'
-import { PostProps } from "../testData";
+import { PostProps } from "@/testData";
 const { list } = defineProps<{ list: PostProps[] }>()
 </script>
 

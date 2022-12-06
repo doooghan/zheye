@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import { RouterLink } from "vue-router";
-import defaultAvatar from '../assets/column.jpg'
+import defaultAvatar from '@/assets/column.jpg'
 
 export interface ColumnProps {
   id: number,

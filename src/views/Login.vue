@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import ValidateInputVue, { RulesProp } from '../components/ValidateInput.vue';
-import ValidateFormVue from '../components/ValidateForm.vue';
+import ValidateInputVue, { RulesProp } from '@/components/ValidateInput.vue';
+import ValidateFormVue from '@/components/ValidateForm.vue';
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 

@@ -7,7 +7,6 @@ import PostListVue from "../components/PostList.vue";
 const route = useRoute()
 const currentId = +route.params.id
 const column = testData.find((c) => c.id === currentId)
-console.log(column)
 const list = testPosts.filter(p => p.columnId === currentId)
 </script>
 

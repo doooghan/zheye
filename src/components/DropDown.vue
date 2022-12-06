@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { onMounted, onUnmounted, ref, toRefs, watch } from 'vue';
-import useClickOutside from '../hooks/useClickOutside'
+import { ref, toRefs, watch } from 'vue';
+import useClickOutside from '@/hooks/useClickOutside'
 
 const props = defineProps<{ title: string }>()
 const isOpen = ref(false)

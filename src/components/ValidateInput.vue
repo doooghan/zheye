@@ -6,7 +6,7 @@ export default {
 </script>
 <script setup lang="ts">
 import { onMounted, reactive, useAttrs } from 'vue';
-import { emitter } from '../mitt'
+import { emitter } from '@/mitt'
 
 export interface RuleProp {
   type: 'require' | 'email' | 'range'

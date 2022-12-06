@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { onMounted, onUnmounted } from 'vue';
-import { emitter } from '../mitt'
+import { emitter } from '@/mitt'
 
 type ValidateFunc = () => boolean
 
