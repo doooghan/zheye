@@ -1,8 +1,7 @@
 import mitt from "mitt";
 
 type Events = {
-	// "form-item-created": () => boolean;
-	"form-item-created": string;
+	"form-item-created": () => boolean;
 };
 
 export const emitter = mitt<Events>();

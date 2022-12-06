@@ -1,18 +1,24 @@
 <script setup lang="ts">
-import { onUnmounted } from 'vue';
+import { onMounted, onUnmounted } from 'vue';
 import { emitter } from '../mitt'
 
+type ValidateFunc = () => boolean
 
-const callback = (test: string) => {
-  console.log(test)
+const emits = defineEmits<{ (e: 'form-submit', isValid: boolean): void }>()
+
+const funcArr: ValidateFunc[] = []
+const callback = (func: ValidateFunc) => {
+  funcArr.push(func)
 }
+
 emitter.on('form-item-created', callback)
 onUnmounted(() => {
   emitter.off('form-item-created', callback)
 })
-const emits = defineEmits<{ (e: 'form-submit', isValid: boolean): void }>()
+
 const submitForm = () => {
-  emits("form-submit", true)
+  const result = funcArr.map(func => func()).every(result => result)
+  emits("form-submit", result)
 }
 </script>
 

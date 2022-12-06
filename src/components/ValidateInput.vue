@@ -5,7 +5,7 @@ export default {
 }
 </script>
 <script setup lang="ts">
-import { reactive, useAttrs } from 'vue';
+import { onMounted, reactive, useAttrs } from 'vue';
 import { emitter } from '../mitt'
 
 export interface RuleProp {
@@ -17,6 +17,10 @@ export type RulesProp = RuleProp[]
 
 const props = defineProps<{ rules: RulesProp, modelValue: string }>()
 const emits = defineEmits<{ (e: 'update:modelValue', val: string): void }>()
+
+onMounted(() => {
+  emitter.emit('form-item-created', validateInput)
+})
 
 const emailReg = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
 
@@ -39,7 +43,7 @@ const validateInput = () => {
           passed = emailReg.test(inputRef.val)
           break;
         case "range":
-          passed = inputRef.val.length > (rule.length || 6)
+          passed = inputRef.val.length >= (rule.length || 6)
           break
         default:
           break;
@@ -57,8 +61,6 @@ const updateValue = (e: Event) => {
   inputRef.val = targetValue
   emits('update:modelValue', targetValue)
 }
-
-emitter.emit('form-item-created', inputRef.val)
 
 defineExpose({
   validateInput
