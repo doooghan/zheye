@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { testData } from "@/testData";
 import ColumnListVue from "@/components/ColumnList.vue";
+
 </script>
 
 <template>

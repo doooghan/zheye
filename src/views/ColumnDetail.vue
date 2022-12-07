@@ -1,8 +1,7 @@
 <script setup lang="ts">
 import { useRoute } from "vue-router";
-import { testData, testPosts } from '../testData'
-import defaultAvatar from '../assets/column.jpg'
-import PostListVue from "../components/PostList.vue";
+import { testData, testPosts } from '@/testData'
+import PostListVue from "@/components/PostList.vue";
 
 const route = useRoute()
 const currentId = +route.params.id
