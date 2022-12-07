@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { PostProps } from "@/testData";
+import { PostProps } from "../../mock/testData/testData";
 const { list } = defineProps<{ list: PostProps[] }>()
 </script>
 

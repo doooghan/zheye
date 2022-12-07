@@ -1,23 +1,12 @@
 import { createPinia, defineStore } from "pinia";
-import { testData, ColumnProps, testPosts, PostProps } from "@/testData";
-
+import axios from "axios";
+import { GlobalDataProps, PostProps } from "@/types";
 export const pinia = createPinia();
 
-export interface UserProps {
-	isLogin: boolean;
-	name?: string;
-	id?: number;
-	columnId?: number;
-}
-export interface GlobalDataProps {
-	column: ColumnProps[];
-	posts: PostProps[];
-	user: UserProps;
-}
 export const useMainStore = defineStore("main", {
 	state: (): GlobalDataProps => ({
-		column: testData,
-		posts: testPosts,
+		column: [],
+		posts: [],
 		user: { isLogin: true, name: "ddd", columnId: 2 },
 	}),
 
@@ -35,6 +24,11 @@ export const useMainStore = defineStore("main", {
 		},
 		createPost(newPost: PostProps) {
 			this.posts.push(newPost);
+		},
+		fetchColumn() {
+			axios.get("/columns?currentPage=1&pageSize=6").then((resp) => {
+				this.column = resp.data.data.list;
+			});
 		},
 	},
 });

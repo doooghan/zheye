@@ -2,10 +2,13 @@
 import ColumnListVue from "@/components/ColumnList.vue";
 import { useMainStore } from "@/stores";
 import { storeToRefs } from "pinia";
+import { onMounted } from "vue";
 
 const store = useMainStore()
+onMounted(() => {
+  store.fetchColumn()
+})
 const { column: list } = storeToRefs(store)
-
 </script>
 
 <template>

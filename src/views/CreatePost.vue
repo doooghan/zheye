@@ -4,7 +4,7 @@ import ValidateFormVue from '@/components/ValidateForm.vue';
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useMainStore } from '@/stores';
-import { PostProps } from '@/testData';
+import { PostProps } from '../../mock/testData';
 
 const titleVal = ref('')
 const titleRules: RulesProp = [
