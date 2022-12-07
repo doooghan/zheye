@@ -2,13 +2,8 @@
 import { computed } from 'vue';
 import { RouterLink } from "vue-router";
 import defaultAvatar from '@/assets/column.jpg'
+import { ColumnProps } from '@/testData';
 
-export interface ColumnProps {
-  id: number,
-  title: string,
-  avatar?: string,
-  description: string
-}
 const props = defineProps<{ list: ColumnProps[] }>()
 
 const columnList = computed(() => {

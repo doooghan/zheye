@@ -1,5 +1,11 @@
 import vueSvg from "@/assets/vue.svg";
-import { ColumnProps } from "@/components/ColumnList.vue";
+
+export interface ColumnProps {
+	id: number;
+	title: string;
+	avatar?: string;
+	description: string;
+}
 
 export interface PostProps {
 	id: number;
