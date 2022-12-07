@@ -1,12 +1,14 @@
 <script setup lang="ts">
 import { useRoute } from "vue-router";
-import { testData, testPosts } from '@/testData'
 import PostListVue from "@/components/PostList.vue";
+import { useMainStore } from "@/stores";
 
+const store = useMainStore()
 const route = useRoute()
+
 const currentId = +route.params.id
-const column = testData.find((c) => c.id === currentId)
-const list = testPosts.filter(p => p.columnId === currentId)
+const column = store.column.find((c) => c.id === currentId)
+const list = store.posts.filter(p => p.columnId === currentId)
 </script>
 
 <template>

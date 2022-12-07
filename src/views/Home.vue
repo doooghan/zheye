@@ -1,6 +1,10 @@
 <script setup lang="ts">
-import { testData } from "@/testData";
 import ColumnListVue from "@/components/ColumnList.vue";
+import { useMainStore } from "@/stores";
+import { storeToRefs } from "pinia";
+
+const store = useMainStore()
+const { column: list } = storeToRefs(store)
 
 </script>
 
@@ -19,7 +23,7 @@ import ColumnListVue from "@/components/ColumnList.vue";
     </section>
     <h4 class="font-weight-bold text-center">发现精彩</h4>
 
-    <ColumnListVue :list="testData" />
+    <ColumnListVue :list="list" />
 
   </div>
 </template>

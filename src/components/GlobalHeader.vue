@@ -3,12 +3,8 @@ import { toRefs } from 'vue';
 import DropDownVue from './DropDown.vue';
 import DropDownItemVue from './DropDownItem.vue';
 import { RouterLink } from 'vue-router';
+import { UserProps } from "@/stores";
 
-export interface UserProps {
-  isLogin: boolean
-  name: string
-  id: number
-}
 const props = defineProps<{ user: UserProps }>()
 
 const { user } = toRefs(props)

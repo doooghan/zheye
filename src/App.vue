@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import { RouterView } from 'vue-router';
-import GlobalHeader, { UserProps } from '@/components/GlobalHeader.vue';
+import GlobalHeader from '@/components/GlobalHeader.vue';
+import { useMainStore } from './stores';
+import { storeToRefs } from 'pinia';
 
-const currentUser: UserProps = {
-  isLogin: false,
-  name: 'hhh',
-  id: 123
-}
+
+const store = useMainStore()
+const { user: currentUser } = storeToRefs(store)
 
 </script>
 

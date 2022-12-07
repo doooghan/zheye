@@ -3,6 +3,7 @@ import ValidateInputVue, { RulesProp } from '@/components/ValidateInput.vue';
 import ValidateFormVue from '@/components/ValidateForm.vue';
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
+import { useMainStore } from '@/stores';
 
 const emailVal = ref('ddd@163.com')
 const emailRules: RulesProp = [
@@ -16,11 +17,12 @@ const passwordRules: RulesProp = [
 ]
 
 const router = useRouter()
+const store = useMainStore()
 
 const onFormSubmit = (isValid: boolean) => {
-  console.log('submit', isValid)
   if (isValid) {
-    router.push({ name: 'ColumnDetail', params: { id: 2 } })
+    store.login()
+    router.push("/")
   }
 }
 

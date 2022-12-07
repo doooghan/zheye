@@ -1,15 +1,29 @@
 import { createPinia, defineStore } from "pinia";
+import { testData, ColumnProps, testPosts, PostProps } from "@/testData";
 
 export const pinia = createPinia();
 
-export const useCounterStore = defineStore("counter", {
-	state: () => ({ count: 0 }),
-	getters: {
-		double: (state) => state.count * 2,
-	},
+export interface UserProps {
+	isLogin: boolean;
+	name?: string;
+	id?: number;
+}
+export interface GlobalDataProps {
+	column: ColumnProps[];
+	posts: PostProps[];
+	user: UserProps;
+}
+export const useMainStore = defineStore("main", {
+	state: (): GlobalDataProps => ({
+		column: testData,
+		posts: testPosts,
+		user: { isLogin: false },
+	}),
+
+	getters: {},
 	actions: {
-		increment() {
-			this.count++;
+		login() {
+			this.user = { ...this.user, name: "vik", isLogin: true };
 		},
 	},
 });
