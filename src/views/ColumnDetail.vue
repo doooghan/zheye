@@ -7,8 +7,8 @@ const store = useMainStore()
 const route = useRoute()
 
 const currentId = +route.params.id
-const column = store.column.find((c) => c.id === currentId)
-const list = store.posts.filter(p => p.columnId === currentId)
+const column = store.getColumnById(currentId)
+const list = store.getPostsById(currentId)
 </script>
 
 <template>

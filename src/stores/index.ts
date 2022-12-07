@@ -20,7 +20,14 @@ export const useMainStore = defineStore("main", {
 		user: { isLogin: false },
 	}),
 
-	getters: {},
+	getters: {
+		getColumnById: (state) => {
+			return (id: number) => state.column.find((c) => c.id === id);
+		},
+		getPostsById: (state) => {
+			return (id: number) => state.posts.filter((p) => p.columnId === id);
+		},
+	},
 	actions: {
 		login() {
 			this.user = { ...this.user, name: "vik", isLogin: true };
