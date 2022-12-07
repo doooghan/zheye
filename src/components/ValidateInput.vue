@@ -9,13 +9,17 @@ import { onMounted, reactive, useAttrs } from 'vue';
 import { emitter } from '@/mitt'
 
 export interface RuleProp {
-  type: 'require' | 'email' | 'range'
+  type: 'required' | 'email' | 'range'
   message: string
   length?: number
 }
 export type RulesProp = RuleProp[]
+export type TagType = 'input' | 'textarea'
 
-const props = defineProps<{ rules: RulesProp, modelValue: string }>()
+const props = withDefaults(defineProps<{ rules: RulesProp, modelValue: string, tag?: TagType }>(), {
+  tag: 'input'
+})
+
 const emits = defineEmits<{ (e: 'update:modelValue', val: string): void }>()
 
 onMounted(() => {
@@ -36,7 +40,7 @@ const validateInput = () => {
       inputRef.message = rule.message
 
       switch (rule.type) {
-        case "require":
+        case "required":
           passed = inputRef.val.trim() !== ''
           break;
         case "email":
@@ -69,8 +73,10 @@ defineExpose({
 
 <template>
   <div class="validate-input-container pb-3">
-    <input class="form-control" :class="{ 'is-invalid': inputRef.error }" :value="inputRef.val" @input="updateValue"
-      @blur="validateInput" v-bind="$attrs">
+    <input v-if="props.tag === 'input'" class="form-control" :class="{ 'is-invalid': inputRef.error }"
+      :value="inputRef.val" @input="updateValue" @blur="validateInput" v-bind="$attrs">
+    <textarea v-else class="form-control" :class="{ 'is-invalid': inputRef.error }" :value="inputRef.val"
+      @input="updateValue" @blur="validateInput" v-bind="$attrs"></textarea>
     <div class="invalid-feedback" v-if="inputRef.error">
       {{ inputRef.message }}
     </div>

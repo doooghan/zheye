@@ -25,7 +25,9 @@ const { user } = toRefs(props)
       <li class="list-inline-item">
         <DropDownVue :title="`你好 ${user.name}`">
 
-          <DropDownItemVue><a href="#" class="dropdown-item">新建文章</a></DropDownItemVue>
+          <DropDownItemVue>
+            <RouterLink to="/create" class="dropdown-item">新建文章</RouterLink>
+          </DropDownItemVue>
           <DropDownItemVue disabled><a href="#" class="dropdown-item">管理</a></DropDownItemVue>
           <DropDownItemVue><a href="#" class="dropdown-item">退出登录</a></DropDownItemVue>
 
