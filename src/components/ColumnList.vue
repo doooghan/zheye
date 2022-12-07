@@ -2,7 +2,7 @@
 import { computed } from 'vue';
 import { RouterLink } from "vue-router";
 import defaultAvatar from '@/assets/column.jpg'
-import { ColumnProps } from '@/stores';
+import { ColumnProps } from '@/types';
 
 const props = defineProps<{ list: ColumnProps[] }>()
 

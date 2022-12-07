@@ -12,10 +12,10 @@ export const useMainStore = defineStore("main", {
 
 	getters: {
 		getColumnById: (state) => {
-			return (id: number) => state.column.find((c) => c.id === id);
+			return (id: string) => state.column.find((c) => c._id === id);
 		},
 		getPostsById: (state) => {
-			return (id: number) => state.posts.filter((p) => p.columnId === id);
+			return (id: string) => state.posts.filter((p) => p.columnId === id);
 		},
 	},
 	actions: {

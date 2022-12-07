@@ -3,7 +3,7 @@ import { toRefs } from 'vue';
 import DropDownVue from './DropDown.vue';
 import DropDownItemVue from './DropDownItem.vue';
 import { RouterLink } from 'vue-router';
-import { UserProps } from "@/stores";
+import { UserProps } from "@/types";
 
 const props = defineProps<{ user: UserProps }>()
 
