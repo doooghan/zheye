@@ -6,9 +6,9 @@ import { onMounted } from "vue";
 
 const store = useMainStore()
 onMounted(() => {
-  store.fetchColumn()
+  store.fetchColumns()
 })
-const { column: list } = storeToRefs(store)
+const { columns: list } = storeToRefs(store)
 </script>
 
 <template>

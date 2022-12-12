@@ -11,12 +11,13 @@ export interface ColumnProps {
 }
 
 export interface PostProps {
-	id: number;
+	_id: string;
 	title: string;
+	excerpt: string;
 	content: string;
-	image?: string;
+	image?: ImageProps;
 	createdAt: string;
-	columnId: string;
+	column: string;
 }
 
 export interface UserProps {
@@ -26,7 +27,7 @@ export interface UserProps {
 	columnId?: number;
 }
 export interface GlobalDataProps {
-	column: ColumnProps[];
+	columns: ColumnProps[];
 	posts: PostProps[];
 	user: UserProps;
 }

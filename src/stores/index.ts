@@ -3,19 +3,23 @@ import axios from "axios";
 import { GlobalDataProps, PostProps } from "@/types";
 export const pinia = createPinia();
 
+// const asyncAction =  async (url:string, that: ) => {
+
+// }
+
 export const useMainStore = defineStore("main", {
 	state: (): GlobalDataProps => ({
-		column: [],
+		columns: [],
 		posts: [],
 		user: { isLogin: true, name: "ddd", columnId: 2 },
 	}),
 
 	getters: {
 		getColumnById: (state) => {
-			return (id: string) => state.column.find((c) => c._id === id);
+			return (id: string) => state.columns.find((c) => c._id === id);
 		},
 		getPostsById: (state) => {
-			return (id: string) => state.posts.filter((p) => p.columnId === id);
+			return (id: string) => state.posts.filter((p) => p.column === id);
 		},
 	},
 	actions: {
@@ -25,10 +29,19 @@ export const useMainStore = defineStore("main", {
 		createPost(newPost: PostProps) {
 			this.posts.push(newPost);
 		},
-		fetchColumn() {
-			axios.get("/columns?currentPage=1&pageSize=6").then((resp) => {
-				this.column = resp.data.data.list;
-			});
+		async fetchColumns() {
+			const { data } = await axios.get("/columns?currentPage=1&pageSize=6");
+			this.columns = data.data.list;
+		},
+		async fetchColumn(id: string) {
+			const { data } = await axios.get(`/columns/${id}`);
+			this.columns = [data.data];
+		},
+		async fetchPosts(id: string) {
+			const { data } = await axios.get(
+				`/columns/${id}/posts?currentPage=1&pageSize=3`,
+			);
+			this.posts = data.data.list;
 		},
 	},
 });

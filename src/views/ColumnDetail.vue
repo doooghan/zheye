@@ -7,6 +7,8 @@ const store = useMainStore()
 const route = useRoute()
 
 const currentId = route.params.id as string
+store.fetchColumn(currentId)
+store.fetchPosts(currentId)
 const column = store.getColumnById(currentId)
 const list = store.getPostsById(currentId)
 </script>
