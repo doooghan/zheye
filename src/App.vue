@@ -4,6 +4,7 @@ import GlobalHeader from '@/components/GlobalHeader.vue';
 import { useMainStore } from './stores';
 import { storeToRefs } from 'pinia';
 
+import LoaderVue from '@/components/Loader.vue';
 
 const store = useMainStore()
 const { user: currentUser } = storeToRefs(store)
@@ -14,7 +15,7 @@ const { user: currentUser } = storeToRefs(store)
   <div class="container">
     <GlobalHeader :user="currentUser" />
 
-    <h1 v-if="store.isLoading">正在加载...</h1>
+    <LoaderVue text="拼命加载中" background="rgba(0, 0, 0, 0.8)" />
 
     <RouterView></RouterView>
 
