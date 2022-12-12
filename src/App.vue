@@ -15,7 +15,7 @@ const { user: currentUser } = storeToRefs(store)
   <div class="container">
     <GlobalHeader :user="currentUser" />
 
-    <LoaderVue text="拼命加载中" background="rgba(0, 0, 0, 0.8)" />
+    <LoaderVue v-if="store.isLoading" />
 
     <RouterView></RouterView>
 

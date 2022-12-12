@@ -1,19 +1,30 @@
 <script setup lang="ts">
+import { onUnmounted } from 'vue';
 
-const { text, background } = defineProps<{ text: string, background: string }>()
+// 1. teleport
+// 2. 动态创建节点，删除节点
+
+const { text = '拼命加载中', background = '' } = defineProps<{ text?: string, background?: string }>()
+const node = document.createElement('div')
+node.id = 'back'
+document.body.appendChild(node)
+onUnmounted(() => {
+  document.body.removeChild(node)
+})
 </script>
 
 <template>
-  <div :style="{ backgroundColor: background, }"
-    class="loading-container d-flex justify-content-center align-items-center h-100">
-    <div class="loading-content">
-      <div class="spinner-border text-primary" role="status">
-        <span class="visually-hidden">{{ (text || 'loading') }}</span>
+  <teleport to="#back">
+    <div :style="{ backgroundColor: background, }"
+      class="loading-container d-flex justify-content-center align-items-center h-100">
+      <div class="loading-content">
+        <div class="spinner-border text-primary" role="status">
+          <span class="visually-hidden">{{ (text || 'loading') }}</span>
+        </div>
+        <p v-if="text" class="text-primary">{{ text }}</p>
       </div>
-      <p v-if="text" class="text-primary">{{ text }}</p>
     </div>
-  </div>
-
+  </teleport>
 </template>
 
 <style scoped>

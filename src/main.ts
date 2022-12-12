@@ -14,7 +14,10 @@ axios.interceptors.request.use((config) => {
 });
 axios.interceptors.response.use((config) => {
 	const store = useMainStore();
-	store.setLoading(false);
+	// store.setLoading(false);
+	setTimeout(() => {
+		store.setLoading(false);
+	}, 1000);
 	return config;
 });
 
