@@ -2,6 +2,8 @@
 import { useRoute } from "vue-router";
 import PostListVue from "@/components/PostList.vue";
 import { useMainStore } from "@/stores";
+import { ref, watchEffect } from "vue";
+import { ColumnProps, PostProps } from "@/types";
 
 const store = useMainStore()
 const route = useRoute()
@@ -9,8 +11,13 @@ const route = useRoute()
 const currentId = route.params.id as string
 store.fetchColumn(currentId)
 store.fetchPosts(currentId)
-const column = store.getColumnById(currentId)
-const list = store.getPostsById(currentId)
+const column = ref<ColumnProps | undefined>()
+const list = ref<PostProps[] | undefined>()
+
+watchEffect(() => {
+  column.value = store.getColumnById(currentId)
+  list.value = store.getPostsById(currentId)
+})
 </script>
 
 <template>
@@ -24,7 +31,7 @@ const list = store.getPostsById(currentId)
         <p class="text-muted">{{ column.description }}</p>
       </div>
     </div>
-    <PostListVue :list="list" />
+    <PostListVue :list="list" v-if="list" />
   </div>
 
 </template>
