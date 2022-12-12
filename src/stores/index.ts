@@ -9,6 +9,7 @@ export const pinia = createPinia();
 
 export const useMainStore = defineStore("main", {
 	state: (): GlobalDataProps => ({
+		isLoading: false,
 		columns: [],
 		posts: [],
 		user: { isLogin: true, name: "ddd", columnId: 2 },
@@ -26,6 +27,10 @@ export const useMainStore = defineStore("main", {
 		login() {
 			this.user = { ...this.user, name: "vik", isLogin: true };
 		},
+		setLoading(status: boolean) {
+			this.isLoading = status;
+		},
+
 		createPost(newPost: PostProps) {
 			this.posts.push(newPost);
 		},

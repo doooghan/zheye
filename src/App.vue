@@ -14,6 +14,8 @@ const { user: currentUser } = storeToRefs(store)
   <div class="container">
     <GlobalHeader :user="currentUser" />
 
+    <h1 v-if="store.isLoading">正在加载...</h1>
+
     <RouterView></RouterView>
 
     <footer class="text-center py-4 text-secondary bg-light mt-6">

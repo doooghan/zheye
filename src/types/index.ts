@@ -27,6 +27,7 @@ export interface UserProps {
 	columnId?: number;
 }
 export interface GlobalDataProps {
+	isLoading: boolean;
 	columns: ColumnProps[];
 	posts: PostProps[];
 	user: UserProps;
