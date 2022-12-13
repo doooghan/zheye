@@ -16,7 +16,7 @@ const { user } = defineProps<{ user: UserProps }>()
         <RouterLink to="/login" class="btn btn-outline-light my-2" type="submit">登录</RouterLink>
       </li>
       <li class="list-inline-item">
-        <RouterLink to="/login" class="btn btn-outline-light my-2" type="submit">注册</RouterLink>
+        <RouterLink to="/signup" class="btn btn-outline-light my-2" type="submit">注册</RouterLink>
       </li>
     </ul>
     <ul v-else class="list-inline mb-0">

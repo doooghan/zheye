@@ -9,9 +9,10 @@ import { onMounted, reactive, useAttrs } from 'vue';
 import { emitter } from '@/mitt'
 
 export interface RuleProp {
-  type: 'required' | 'email' | 'range'
+  type: 'required' | 'email' | 'range' | 'custom'
   message: string
   length?: number
+  validator?: () => boolean
 }
 export type RulesProp = RuleProp[]
 export type TagType = 'input' | 'textarea'
@@ -48,6 +49,9 @@ const validateInput = () => {
           break;
         case "range":
           passed = inputRef.val.length >= (rule.length || 6)
+          break
+        case "custom":
+          passed = rule.validator ? rule.validator() : true;
           break
         default:
           break;

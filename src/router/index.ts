@@ -4,6 +4,7 @@ import LoginVue from "@/views/Login.vue";
 import ColumnDetailVue from "@/views/ColumnDetail.vue";
 import CreatePostVue from "@/views/CreatePost.vue";
 import { useMainStore } from "@/stores";
+import SignupVue from "@/views/Signup.vue";
 
 const routes: RouteRecordRaw[] = [
 	{ path: "/", name: "Home", component: HomeVue },
@@ -13,6 +14,7 @@ const routes: RouteRecordRaw[] = [
 		component: LoginVue,
 		meta: { redirectAlreadyLogin: true },
 	},
+	{ path: "/signup", name: "Signup", component: SignupVue },
 	{ path: "/column/:id", name: "ColumnDetail", component: ColumnDetailVue },
 	{
 		path: "/create",
