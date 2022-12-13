@@ -27,8 +27,13 @@ export interface UserProps {
 	_id?: string;
 	column?: number;
 }
+export interface GlobalErrorProps {
+	status: boolean;
+	message?: string;
+}
 export interface GlobalDataProps {
 	isLoading: boolean;
+	error: GlobalErrorProps;
 	token: string;
 	columns: ColumnProps[];
 	posts: PostProps[];

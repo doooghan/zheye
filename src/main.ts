@@ -12,12 +12,22 @@ axios.interceptors.request.use((config) => {
 	store.setLoading(true);
 	return config;
 });
-axios.interceptors.response.use((config) => {
-	const store = useMainStore();
-	store.setLoading(false);
+axios.interceptors.response.use(
+	(config) => {
+		const store = useMainStore();
+		store.setLoading(false);
 
-	return config;
-});
+		return config;
+	},
+	(e) => {
+		const { error } = e.response.data;
+		const store = useMainStore();
+		store.setLoading(false);
+
+		store.setError({ status: true, message: error });
+		return Promise.reject(error);
+	},
+);
 
 const app = createApp(App);
 app.use(router);

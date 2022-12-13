@@ -22,7 +22,7 @@ onMounted(() => {
 <template>
   <div class="container">
     <GlobalHeader :user="currentUser" />
-
+    <h1>{{ store.error.message }}</h1>
     <LoaderVue v-if="store.isLoading" />
 
     <RouterView></RouterView>

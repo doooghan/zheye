@@ -25,11 +25,14 @@ const onFormSubmit = (isValid: boolean) => {
       email: emailVal.value,
       password: passwordVal.value
     }
-    store.loginAndFetch(payload).then((value) => {
-      console.log(value)
-      router.push("/")
-    }
-    )
+    store.loginAndFetch(payload)
+      .then((value) => {
+        console.log(value)
+        router.push("/")
+      })
+      .catch((error) => {
+        console.log(error)
+      })
   }
 }
 

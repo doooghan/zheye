@@ -1,11 +1,12 @@
 import { createPinia, defineStore } from "pinia";
 import axios from "axios";
-import { GlobalDataProps, PostProps } from "@/types";
+import { GlobalDataProps, GlobalErrorProps, PostProps } from "@/types";
 export const pinia = createPinia();
 
 export const useMainStore = defineStore("main", {
 	state: (): GlobalDataProps => ({
 		isLoading: false,
+		error: { status: false },
 		token: localStorage.getItem("token") || "",
 		columns: [],
 		posts: [],
@@ -24,8 +25,8 @@ export const useMainStore = defineStore("main", {
 		async login(payload: any) {
 			const { data } = await axios.post("/user/login", {
 				...payload,
-				email: "111@test.com",
-				password: "111111",
+				// email: "111@test.com",
+				// password: "111111",
 			});
 			const { token } = data.data;
 			this.token = token;
@@ -44,8 +45,12 @@ export const useMainStore = defineStore("main", {
 				return this.fetchCurrentUser();
 			});
 		},
+
 		setLoading(status: boolean) {
 			this.isLoading = status;
+		},
+		setError(e: GlobalErrorProps) {
+			this.error = e;
 		},
 
 		createPost(newPost: PostProps) {
