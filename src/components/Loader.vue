@@ -1,16 +1,10 @@
 <script setup lang="ts">
-import { onUnmounted } from 'vue';
-
+import uesDomCreate from '@/hooks/useDomCreate';
 // 1. teleport
 // 2. 动态创建节点，删除节点
 
 const { text = '拼命加载中', background = '' } = defineProps<{ text?: string, background?: string }>()
-const node = document.createElement('div')
-node.id = 'back'
-document.body.appendChild(node)
-onUnmounted(() => {
-  document.body.removeChild(node)
-})
+uesDomCreate('back')
 </script>
 
 <template>

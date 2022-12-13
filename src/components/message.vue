@@ -1,14 +1,12 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-
+import uesDomCreate from '@/hooks/useDomCreate';
 export type MessageType = 'success' | 'error' | 'default'
 
 const { type = 'default', message } = defineProps<{ type?: MessageType, message: string }>()
 const emits = defineEmits<{ (e: 'close-message', status: boolean): void }>()
 
-const node = document.createElement('div')
-node.id = 'message'
-document.body.appendChild(node)
+uesDomCreate('message')
 
 const isVisible = ref(true)
 const classObject = { 'alert-success': type === 'success', 'alert-danger': type === "error", 'alert-primary': type === 'default' }
