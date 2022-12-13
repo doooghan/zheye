@@ -7,7 +7,7 @@ import { storeToRefs } from 'pinia';
 import LoaderVue from '@/components/Loader.vue';
 import { onMounted } from 'vue';
 import axios from 'axios';
-
+import messageVue from './components/message.vue';
 const store = useMainStore()
 const { user: currentUser } = storeToRefs(store)
 
@@ -22,7 +22,7 @@ onMounted(() => {
 <template>
   <div class="container">
     <GlobalHeader :user="currentUser" />
-    <h1>{{ store.error.message }}</h1>
+    <messageVue :message="store.error.message || ''" />
     <LoaderVue v-if="store.isLoading" />
 
     <RouterView></RouterView>
