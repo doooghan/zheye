@@ -10,6 +10,7 @@ axios.defaults.baseURL = "/api/";
 axios.interceptors.request.use((config) => {
 	const store = useMainStore();
 	store.setLoading(true);
+	store.setError({ status: false });
 	return config;
 });
 axios.interceptors.response.use(

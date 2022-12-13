@@ -5,9 +5,10 @@ import { useMainStore } from './stores';
 import { storeToRefs } from 'pinia';
 
 import LoaderVue from '@/components/Loader.vue';
-import { onMounted } from 'vue';
+import { onMounted, watch } from 'vue';
 import axios from 'axios';
-import messageVue from './components/message.vue';
+import createMessage from '@/components/CreateMessage';
+// import messageVue from './components/Message.vue';
 const store = useMainStore()
 const { user: currentUser } = storeToRefs(store)
 
@@ -17,12 +18,20 @@ onMounted(() => {
     store.fetchCurrentUser()
   }
 })
+
+watch(() => store.error.status, () => {
+  const { status, message } = store.error
+  if (status && message) {
+    createMessage(message, 'error', 2000)
+
+  }
+})
 </script>
 
 <template>
   <div class="container">
     <GlobalHeader :user="currentUser" />
-    <messageVue v-if="store.error.status" :message="store.error.message || ''" />
+    <!-- <messageVue v-if="store.error.status" :message="store.error.message || ''" /> -->
     <LoaderVue v-if="store.isLoading" />
 
     <RouterView></RouterView>
