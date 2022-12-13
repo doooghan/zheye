@@ -5,10 +5,18 @@ import { useMainStore } from './stores';
 import { storeToRefs } from 'pinia';
 
 import LoaderVue from '@/components/Loader.vue';
+import { onMounted } from 'vue';
+import axios from 'axios';
 
 const store = useMainStore()
 const { user: currentUser } = storeToRefs(store)
 
+onMounted(() => {
+  if (store.token && !store.user.isLogin) {
+    axios.defaults.headers.common["Authorization"] = `Bearer ${store.token}`;
+    store.fetchCurrentUser()
+  }
+})
 </script>
 
 <template>

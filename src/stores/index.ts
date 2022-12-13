@@ -6,7 +6,7 @@ export const pinia = createPinia();
 export const useMainStore = defineStore("main", {
 	state: (): GlobalDataProps => ({
 		isLoading: false,
-		token: "",
+		token: localStorage.getItem("token") || "",
 		columns: [],
 		posts: [],
 		user: { isLogin: false },
@@ -29,6 +29,7 @@ export const useMainStore = defineStore("main", {
 			});
 			const { token } = data.data;
 			this.token = token;
+			localStorage.setItem("token", token);
 			axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
 			return data;
