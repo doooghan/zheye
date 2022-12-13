@@ -28,6 +28,7 @@ export interface UserProps {
 }
 export interface GlobalDataProps {
 	isLoading: boolean;
+	token: string;
 	columns: ColumnProps[];
 	posts: PostProps[];
 	user: UserProps;

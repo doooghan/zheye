@@ -21,8 +21,16 @@ const store = useMainStore()
 
 const onFormSubmit = (isValid: boolean) => {
   if (isValid) {
-    store.login()
-    router.push("/")
+    const payload = {
+      email: emailVal.value,
+      password: passwordVal.value
+    }
+    store.login(payload).then(
+      (value) => {
+        console.log(value)
+        router.push("/")
+      }
+    )
   }
 }
 

@@ -3,16 +3,13 @@ import axios from "axios";
 import { GlobalDataProps, PostProps } from "@/types";
 export const pinia = createPinia();
 
-// const asyncAction =  async (url:string, that: ) => {
-
-// }
-
 export const useMainStore = defineStore("main", {
 	state: (): GlobalDataProps => ({
 		isLoading: false,
+		token: "",
 		columns: [],
 		posts: [],
-		user: { isLogin: true, name: "ddd", columnId: 2 },
+		user: { isLogin: false, name: "ddd", columnId: 2 },
 	}),
 
 	getters: {
@@ -24,8 +21,14 @@ export const useMainStore = defineStore("main", {
 		},
 	},
 	actions: {
-		login() {
-			this.user = { ...this.user, name: "vik", isLogin: true };
+		async login(payload: any) {
+			const { data } = await axios.post("/user/login", {
+				...payload,
+				email: "111@test.com",
+				password: "111111",
+			});
+			this.token = data.data.token;
+			return data;
 		},
 		setLoading(status: boolean) {
 			this.isLoading = status;
