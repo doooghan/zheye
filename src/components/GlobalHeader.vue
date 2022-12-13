@@ -1,13 +1,11 @@
 <script setup lang="ts">
-import { toRefs } from 'vue';
 import DropDownVue from './DropDown.vue';
 import DropDownItemVue from './DropDownItem.vue';
 import { RouterLink } from 'vue-router';
 import { UserProps } from "@/types";
 
-const props = defineProps<{ user: UserProps }>()
+const { user } = defineProps<{ user: UserProps }>()
 
-const { user } = toRefs(props)
 </script>
 
 <template>
@@ -23,7 +21,7 @@ const { user } = toRefs(props)
     </ul>
     <ul v-else class="list-inline mb-0">
       <li class="list-inline-item">
-        <DropDownVue :title="`你好 ${user.name}`">
+        <DropDownVue :title="`你好 ${user.nickName}`">
 
           <DropDownItemVue>
             <RouterLink to="/create" class="dropdown-item">新建文章</RouterLink>

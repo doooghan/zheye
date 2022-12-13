@@ -9,7 +9,7 @@ export const useMainStore = defineStore("main", {
 		token: "",
 		columns: [],
 		posts: [],
-		user: { isLogin: false, name: "ddd", columnId: 2 },
+		user: { isLogin: false },
 	}),
 
 	getters: {
@@ -27,8 +27,21 @@ export const useMainStore = defineStore("main", {
 				email: "111@test.com",
 				password: "111111",
 			});
-			this.token = data.data.token;
+			const { token } = data.data;
+			this.token = token;
+			axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+
 			return data;
+		},
+		async fetchCurrentUser() {
+			const { data } = await axios.get("/user/current");
+			this.user = { isLogin: true, ...data.data };
+			return data;
+		},
+		async loginAndFetch(payload: any) {
+			return this.login(payload).then(() => {
+				return this.fetchCurrentUser();
+			});
 		},
 		setLoading(status: boolean) {
 			this.isLoading = status;

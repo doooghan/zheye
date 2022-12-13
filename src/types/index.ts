@@ -22,9 +22,10 @@ export interface PostProps {
 
 export interface UserProps {
 	isLogin: boolean;
-	name?: string;
-	id?: number;
-	columnId?: number;
+	email?: string;
+	nickName?: string;
+	_id?: string;
+	column?: number;
 }
 export interface GlobalDataProps {
 	isLoading: boolean;
