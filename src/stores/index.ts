@@ -77,5 +77,9 @@ export const useMainStore = defineStore("main", {
 			);
 			this.posts = data.data.list;
 		},
+		async fetchPost(id: string) {
+			const { data } = await axios.get(`/posts/${id}`);
+			this.posts = [data.data];
+		},
 	},
 });

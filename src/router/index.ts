@@ -6,6 +6,7 @@ import CreatePostVue from "@/views/CreatePost.vue";
 import { useMainStore } from "@/stores";
 import SignupVue from "@/views/Signup.vue";
 import axios from "axios";
+import PostDetailVue from "@/views/PostDetail.vue";
 
 const routes: RouteRecordRaw[] = [
 	{ path: "/", name: "Home", component: HomeVue },
@@ -17,6 +18,7 @@ const routes: RouteRecordRaw[] = [
 	},
 	{ path: "/signup", name: "Signup", component: SignupVue },
 	{ path: "/column/:id", name: "ColumnDetail", component: ColumnDetailVue },
+	{ path: "/post/:id", name: "PostDetail", component: PostDetailVue },
 	{
 		path: "/create",
 		name: "CreatePost",
