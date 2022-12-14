@@ -53,10 +53,11 @@ const onFileUploaded = (rawData: ResponseType<ImageProps>) => {
   <div class="create-post-page">
     <h5 class="my-4 text-center">创建文章</h5>
     <UploaderVue action="/upload" :before-upload="beforeUpload" @file-uploaded="onFileUploaded">
+      <h2>点击上传头图</h2>
       <template #loading>
         <div class="d-flex">
           <div class="spinner-border text-secondary" role="status">
-            <span class="sr-only">Loading...</span>
+            <span class="visually-hidden">Loading...</span>
           </div>
           <h2>正在上传</h2>
         </div>

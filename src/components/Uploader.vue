@@ -56,7 +56,9 @@ const handleFileChange = (e: Event) => {
 
 <template>
   <div class="uploader">
-    <div class="file-upload-container" @click="triggerUpload">
+    <div
+      class="file-upload-container d-flex align-items-center justify-content-center bg-light text-secondary w-100 my-4"
+      @click="triggerUpload">
       <slot v-if="fileStatus === 'loading'" name="loading">
         <button class="btn btn-primary" disabled>正在上传</button>
       </slot>
@@ -74,6 +76,16 @@ const handleFileChange = (e: Event) => {
   </div>
 </template>
 
-<style scoped>
+<style>
+.file-upload-container {
+  height: 200px;
+  cursor: pointer;
+  overflow: hidden;
+}
 
+.file-upload-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
 </style>
