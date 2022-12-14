@@ -58,9 +58,11 @@ export const useMainStore = defineStore("main", {
 			this.error = e;
 		},
 
-		createPost(newPost: PostProps) {
-			this.posts.push(newPost);
+		async createPost(newPost: PostProps) {
+			const { data } = await axios.post("/posts", newPost);
+			return data.data;
 		},
+
 		async fetchColumns() {
 			const { data } = await axios.get("/columns?currentPage=1&pageSize=6");
 			this.columns = data.data.list;

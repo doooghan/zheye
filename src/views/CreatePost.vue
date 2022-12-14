@@ -6,7 +6,7 @@ import { useRouter } from 'vue-router';
 import { useMainStore } from '@/stores';
 import UploaderVue from '@/components/Uploader.vue';
 import createMessage from '@/components/CreateMessage';
-import { ResponseType, ImageProps } from '@/types'
+import { ResponseType, ImageProps, PostProps } from '@/types'
 import { beforeUploadCheck } from '@/helpers';
 
 const titleVal = ref('')
@@ -20,20 +20,27 @@ const contentRules: RulesProp = [
 
 const router = useRouter()
 const store = useMainStore()
+let imageId = ''
 
 const onFormSubmit = (isValid: boolean) => {
   if (isValid) {
-    const { column } = store.user
-    if (column) {
-      // const newPost: PostProps = {
-      //   _id: "test",
-      //   title: titleVal.value,
-      //   content: contentVal.value,
-      //   createdAt: new Date().toLocaleString(),
-      //   column,
-      // }
-      // store.createPost(newPost)
-      router.push({ name: 'ColumnDetail', params: { id: column } })
+    const { column, _id } = store.user
+    if (column && _id) {
+      const newPost: PostProps = {
+        title: titleVal.value,
+        content: contentVal.value,
+        column,
+        author: _id
+      }
+      if (imageId) {
+        newPost.image = imageId
+      }
+      store.createPost(newPost).then(() => {
+        createMessage('创建成功，两秒后跳转', 'success');
+        setTimeout(() => {
+          router.push({ name: 'ColumnDetail', params: { id: column } })
+        }, 2000)
+      })
     }
   }
 }
@@ -51,6 +58,9 @@ const uploadCheck = (file: File) => {
 
 const onFileUploaded = (rawData: ResponseType<ImageProps>) => {
   createMessage(`上传图片ID ${rawData.data._id}`, 'success')
+  if (rawData.data._id) {
+    imageId = rawData.data._id
+  }
 }
 </script>
 

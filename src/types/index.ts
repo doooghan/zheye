@@ -17,13 +17,14 @@ export interface ColumnProps {
 }
 
 export interface PostProps {
-	_id: string;
+	_id?: string;
 	title: string;
-	excerpt: string;
+	excerpt?: string;
 	content: string;
-	image?: ImageProps;
-	createdAt: string;
+	image?: ImageProps | string;
+	createdAt?: string;
 	column: string;
+	author: string;
 }
 
 export interface UserProps {
