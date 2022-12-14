@@ -8,7 +8,7 @@ import LoaderVue from '@/components/Loader.vue';
 import { onMounted, watch } from 'vue';
 import axios from 'axios';
 import createMessage from '@/components/CreateMessage';
-// import messageVue from './components/Message.vue';
+import UploaderVue from './components/Uploader.vue';
 const store = useMainStore()
 const { user: currentUser } = storeToRefs(store)
 
@@ -31,7 +31,7 @@ watch(() => store.error.status, () => {
 <template>
   <div class="container">
     <GlobalHeader :user="currentUser" />
-    <!-- <messageVue v-if="store.error.status" :message="store.error.message || ''" /> -->
+    <UploaderVue />
     <LoaderVue v-if="store.isLoading" />
 
     <RouterView></RouterView>
