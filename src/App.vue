@@ -29,7 +29,7 @@ watch(() => store.error.status, () => {
 })
 
 const beforeUpload = (file: File) => {
-  const isJPG = file.type === 'image/jpg'
+  const isJPG = file.type === 'image/jpeg'
   if (!isJPG) {
     createMessage('选择的文件不是jpg类型', 'error')
   }
@@ -43,8 +43,7 @@ const onFileUploaded = (rawData: ResponseType<ImageProps>) => {
 <template>
   <div class="container">
     <GlobalHeader :user="currentUser" />
-    <UploaderVue action="/test" :before-upload="beforeUpload" @file-uploaded="onFileUploaded">
-      <h2>上传</h2>
+    <UploaderVue action="/upload" :before-upload="beforeUpload" @file-uploaded="onFileUploaded">
       <template #loading>
         <div class="d-flex">
           <div class="spinner-border text-secondary" role="status">
@@ -52,6 +51,9 @@ const onFileUploaded = (rawData: ResponseType<ImageProps>) => {
           </div>
           <h2>正在上传</h2>
         </div>
+      </template>
+      <template #uploaded="dataProps">
+        <img :src="dataProps.uploadedData.data.url" width="500">
       </template>
     </UploaderVue>
     <LoaderVue v-if="store.isLoading" />
