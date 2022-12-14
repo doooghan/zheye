@@ -1,3 +1,9 @@
+export interface ResponseType<P = {}> {
+	code: number;
+	message: string;
+	data: P;
+}
+
 export interface ImageProps {
 	_id?: string;
 	url?: string;

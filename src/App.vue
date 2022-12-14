@@ -9,6 +9,7 @@ import { onMounted, watch } from 'vue';
 import axios from 'axios';
 import createMessage from '@/components/CreateMessage';
 import UploaderVue from './components/Uploader.vue';
+import { ResponseType, ImageProps } from '@/types'
 const store = useMainStore()
 const { user: currentUser } = storeToRefs(store)
 
@@ -26,12 +27,23 @@ watch(() => store.error.status, () => {
 
   }
 })
+
+const beforeUpload = (file: File) => {
+  const isJPG = file.type === 'image/jpg'
+  if (!isJPG) {
+    createMessage('选择的文件不是jpg类型', 'error')
+  }
+  return isJPG
+}
+const onFileUploaded = (rawData: ResponseType<ImageProps>) => {
+  createMessage(`上传图片ID ${rawData.data._id}`, 'success')
+}
 </script>
 
 <template>
   <div class="container">
     <GlobalHeader :user="currentUser" />
-    <UploaderVue />
+    <UploaderVue action="/test" :before-upload="beforeUpload" @file-uploaded="onFileUploaded" />
     <LoaderVue v-if="store.isLoading" />
 
     <RouterView></RouterView>
