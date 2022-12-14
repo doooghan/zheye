@@ -43,7 +43,17 @@ const onFileUploaded = (rawData: ResponseType<ImageProps>) => {
 <template>
   <div class="container">
     <GlobalHeader :user="currentUser" />
-    <UploaderVue action="/test" :before-upload="beforeUpload" @file-uploaded="onFileUploaded" />
+    <UploaderVue action="/test" :before-upload="beforeUpload" @file-uploaded="onFileUploaded">
+      <h2>上传</h2>
+      <template #loading>
+        <div class="d-flex">
+          <div class="spinner-border text-secondary" role="status">
+            <span class="sr-only">Loading...</span>
+          </div>
+          <h2>正在上传</h2>
+        </div>
+      </template>
+    </UploaderVue>
     <LoaderVue v-if="store.isLoading" />
 
     <RouterView></RouterView>

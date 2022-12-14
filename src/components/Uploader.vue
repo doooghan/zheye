@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import axios from 'axios';
-import { emit } from 'process';
 import { ref } from 'vue';
 
 type UploadStatus = 'ready' | 'loading' | 'success' | 'error'
@@ -21,31 +20,31 @@ const handleFileChange = (e: Event) => {
   if (files) {
     fileStatus.value = 'loading'
 
-    const uploadedFile = files[0]
+    // const uploadedFile = files[0]
 
-    if (beforeUpload) {
-      const result = beforeUpload(uploadedFile)
-      if (!result) {
-        return;
-      }
-    }
+    // if (beforeUpload) {
+    //   const result = beforeUpload(uploadedFile)
+    //   if (!result) {
+    //     return;
+    //   }
+    // }
 
-    const formData = new FormData()
-    formData.append(uploadedFile.name, uploadedFile)
+    // const formData = new FormData()
+    // formData.append(uploadedFile.name, uploadedFile)
 
-    axios.post(action, formData, {
-      headers: { 'Content-Type': 'multipart/form-data' }
-    }).then((resp) => {
-      emits('file-uploaded', resp.data)
-      fileStatus.value = 'success'
-    }).catch((error) => {
-      emits('file-uploaded-error', { error })
-      fileStatus.value = 'error'
-    }).finally(() => {
-      if (fileInput.value) {
-        fileInput.value.value = ''
-      }
-    })
+    // axios.post(action, formData, {
+    //   headers: { 'Content-Type': 'multipart/form-data' }
+    // }).then((resp) => {
+    //   emits('file-uploaded', resp.data)
+    //   fileStatus.value = 'success'
+    // }).catch((error) => {
+    //   emits('file-uploaded-error', { error })
+    //   fileStatus.value = 'error'
+    // }).finally(() => {
+    //   if (fileInput.value) {
+    //     fileInput.value.value = ''
+    //   }
+    // })
 
   }
 }
@@ -53,12 +52,20 @@ const handleFileChange = (e: Event) => {
 
 <template>
   <div class="uploader">
-    <button class="btn btn-primary" @click="triggerUpload">
-      <span v-if="fileStatus === 'loading'">正在上传</span>
-      <span v-else-if="fileStatus === 'success'">上传成功</span>
-      <span v-else-if="fileStatus === 'error'">上传失败</span>
-      <span v-else>点击上传</span>
-    </button>
+    <div class="file-upload-container" @click="triggerUpload">
+      <slot v-if="fileStatus === 'loading'" name="loading">
+        <button class="btn btn-primary" disabled>正在上传</button>
+      </slot>
+      <slot v-else-if="fileStatus === 'success'" name="success">
+        <button class="btn btn-primary">上传成功</button>
+      </slot>
+      <slot v-else-if="fileStatus === 'error'" name="error">
+        <button class="btn btn-primary">上传失败</button>
+      </slot>
+      <slot v-else>
+        <button class="btn btn-primary">点击上传</button>
+      </slot>
+    </div>
     <input type="file" class="file-input d-none" ref="fileInput" @change="handleFileChange">
   </div>
 </template>
