@@ -5,6 +5,7 @@ import ColumnDetailVue from "@/views/ColumnDetail.vue";
 import CreatePostVue from "@/views/CreatePost.vue";
 import { useMainStore } from "@/stores";
 import SignupVue from "@/views/Signup.vue";
+import axios from "axios";
 
 const routes: RouteRecordRaw[] = [
 	{ path: "/", name: "Home", component: HomeVue },
@@ -31,11 +32,37 @@ export const router = createRouter({
 
 router.beforeEach((to, from, next) => {
 	const store = useMainStore();
-	if (to.meta.requiredLogin && !store.user.isLogin) {
-		next({ name: "Login" });
-	} else if (to.meta.redirectAlreadyLogin && store.user.isLogin) {
-		next({ name: "Home" });
+	const { user, token } = store;
+	const { requiredLogin, redirectAlreadyLogin } = to.meta;
+	if (user.isLogin) {
+		if (redirectAlreadyLogin) {
+			next("/");
+		} else {
+			next();
+		}
 	} else {
-		next();
+		if (token) {
+			axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+			store
+				.fetchCurrentUser()
+				.then(() => {
+					if (redirectAlreadyLogin) {
+						next("/");
+					} else {
+						next();
+					}
+				})
+				.catch((e) => {
+					console.log(e);
+					localStorage.removeItem("token");
+					next("/login");
+				});
+		} else {
+			if (requiredLogin) {
+				next("/login");
+			} else {
+				next();
+			}
+		}
 	}
 });

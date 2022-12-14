@@ -4,8 +4,9 @@ import ValidateFormVue from '@/components/ValidateForm.vue';
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useMainStore } from '@/stores';
-import { PostProps } from '@/types';
-import axios from 'axios';
+import UploaderVue from '@/components/Uploader.vue';
+import createMessage from '@/components/CreateMessage';
+import { ResponseType, ImageProps } from '@/types'
 
 const titleVal = ref('')
 const titleRules: RulesProp = [
@@ -36,27 +37,35 @@ const onFormSubmit = (isValid: boolean) => {
   }
 }
 
-const handleFileChange = (e: Event) => {
-  const target = e.target as HTMLInputElement
-  const files = target.files
-  if (files) {
-    const uploadedFile = files[0]
-    const formData = new FormData()
-    formData.append(uploadedFile.name, uploadedFile)
-    axios.post('upload', formData, {
-      headers: { 'Content-Type': 'multipart/form-data' }
-    }).then((resp) => {
-      console.log(resp)
-    })
-
+const beforeUpload = (file: File) => {
+  const isJPG = file.type === 'image/jpeg'
+  if (!isJPG) {
+    createMessage('选择的文件不是jpg类型', 'error')
   }
+  return isJPG
+}
+const onFileUploaded = (rawData: ResponseType<ImageProps>) => {
+  createMessage(`上传图片ID ${rawData.data._id}`, 'success')
 }
 </script>
 
 <template>
   <div class="create-post-page">
     <h5 class="my-4 text-center">创建文章</h5>
-    <input type="file" name="file" @change="handleFileChange">
+    <UploaderVue action="/upload" :before-upload="beforeUpload" @file-uploaded="onFileUploaded">
+      <template #loading>
+        <div class="d-flex">
+          <div class="spinner-border text-secondary" role="status">
+            <span class="sr-only">Loading...</span>
+          </div>
+          <h2>正在上传</h2>
+        </div>
+      </template>
+      <template #uploaded="dataProps">
+        <img :src="dataProps.uploadedData.data.url" width="500">
+      </template>
+    </UploaderVue>
+
     <ValidateFormVue @form-submit="onFormSubmit">
       <div class="mb-3">
         <label class="form-label">文章标题</label>
