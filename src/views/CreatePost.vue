@@ -7,6 +7,7 @@ import { useMainStore } from '@/stores';
 import UploaderVue from '@/components/Uploader.vue';
 import createMessage from '@/components/CreateMessage';
 import { ResponseType, ImageProps } from '@/types'
+import { beforeUploadCheck } from '@/helpers';
 
 const titleVal = ref('')
 const titleRules: RulesProp = [
@@ -37,13 +38,17 @@ const onFormSubmit = (isValid: boolean) => {
   }
 }
 
-const beforeUpload = (file: File) => {
-  const isJPG = file.type === 'image/jpeg'
-  if (!isJPG) {
-    createMessage('选择的文件不是jpg类型', 'error')
+const uploadCheck = (file: File) => {
+  const { passed, error } = beforeUploadCheck(file, { format: ['image/jpeg', 'image/png'], size: 1 })
+  if (error === 'format') {
+    createMessage('文件类型仅支持jpeg和png', 'error')
   }
-  return isJPG
+  if (error === 'size') {
+    createMessage('文件最大1MB', 'error')
+  }
+  return passed
 }
+
 const onFileUploaded = (rawData: ResponseType<ImageProps>) => {
   createMessage(`上传图片ID ${rawData.data._id}`, 'success')
 }
@@ -52,7 +57,7 @@ const onFileUploaded = (rawData: ResponseType<ImageProps>) => {
 <template>
   <div class="create-post-page">
     <h5 class="my-4 text-center">创建文章</h5>
-    <UploaderVue action="/upload" :before-upload="beforeUpload" @file-uploaded="onFileUploaded">
+    <UploaderVue action="/upload" :before-upload="uploadCheck" @file-uploaded="onFileUploaded">
       <h2>点击上传头图</h2>
       <template #loading>
         <div class="d-flex">
