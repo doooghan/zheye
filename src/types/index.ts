@@ -25,7 +25,7 @@ export interface UserProps {
 	email?: string;
 	nickName?: string;
 	_id?: string;
-	column?: number;
+	column?: string;
 }
 export interface GlobalErrorProps {
 	status: boolean;

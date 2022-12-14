@@ -3,7 +3,7 @@ import ValidateInputVue, { RulesProp } from '@/components/ValidateInput.vue';
 import ValidateFormVue from '@/components/ValidateForm.vue';
 import { reactive } from 'vue';
 import { useRouter } from 'vue-router';
-// import { useMainStore } from '@/stores';
+import createMessage from '@/components/CreateMessage';
 
 const formData = reactive({
   email: 'araes@test.com',
@@ -33,7 +33,7 @@ const repeatPasswordRules: RulesProp = [
 const router = useRouter()
 const onFormSubmit = (isValid: boolean) => {
   if (isValid) {
-    console.log('验证成功, 2秒后跳转')
+    createMessage('验证成功, 2秒后跳转', 'success', 2000)
     setTimeout(() => router.push({ name: 'Login' }), 2000)
   }
 }
