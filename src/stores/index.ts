@@ -35,6 +35,11 @@ export const useMainStore = defineStore("main", {
 
 			return data;
 		},
+		logout() {
+			this.token = "";
+			localStorage.removeItem("token");
+			delete axios.defaults.headers.common?.Authorization;
+		},
 		async fetchCurrentUser() {
 			const { data } = await axios.get("/user/current");
 			this.user = { isLogin: true, ...data.data };
