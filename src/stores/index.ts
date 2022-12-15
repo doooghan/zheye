@@ -80,6 +80,7 @@ export const useMainStore = defineStore("main", {
 		async fetchPost(id: string) {
 			const { data } = await axios.get(`/posts/${id}`);
 			this.posts = [data.data];
+			return data;
 		},
 	},
 });

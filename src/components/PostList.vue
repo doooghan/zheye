@@ -3,12 +3,6 @@ import { ImageProps, PostProps } from "@/types";
 import { RouterLink } from "vue-router";
 import { computed } from "vue";
 const { list } = defineProps<{ list: PostProps[] }>()
-const posts = computed(() => {
-  return list.map(post => {
-    post.image as ImageProps
-    return post
-  })
-})
 
 </script>
 
@@ -35,5 +29,8 @@ const posts = computed(() => {
 </template>
 
 <style scoped>
-
+.post-list a {
+  text-decoration: none;
+  color: black;
+}
 </style>

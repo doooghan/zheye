@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import ValidateInputVue, { RulesProp } from '@/components/ValidateInput.vue';
 import ValidateFormVue from '@/components/ValidateForm.vue';
-import { ref } from 'vue';
-import { useRouter } from 'vue-router';
+import { onMounted, ref } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
 import { useMainStore } from '@/stores';
 import UploaderVue from '@/components/Uploader.vue';
 import createMessage from '@/components/CreateMessage';
@@ -19,8 +19,22 @@ const contentRules: RulesProp = [
 ]
 
 const router = useRouter()
+const route = useRoute()
 const store = useMainStore()
+const uploadedData = ref()
 let imageId = ''
+const isEditMode = !!route.query.postId
+
+onMounted(() => {
+  if (isEditMode) {
+    store.fetchPost(route.query.postId as string).then((rawData: ResponseType<PostProps>) => {
+      const currentPost = rawData.data
+      if (currentPost.image) {
+        uploadedData.value = { data: currentPost.image }
+      }
+    })
+  }
+})
 
 const onFormSubmit = (isValid: boolean) => {
   if (isValid) {
@@ -67,7 +81,7 @@ const onFileUploaded = (rawData: ResponseType<ImageProps>) => {
 <template>
   <div class="create-post-page">
     <h5 class="my-4 text-center">创建文章</h5>
-    <UploaderVue action="/upload" :before-upload="uploadCheck" @file-uploaded="onFileUploaded">
+    <UploaderVue action="/upload" :before-upload="uploadCheck" @file-uploaded="onFileUploaded" :uploaded="uploadedData">
       <h2>点击上传头图</h2>
       <template #loading>
         <div class="d-flex">

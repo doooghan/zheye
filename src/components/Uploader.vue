@@ -1,17 +1,22 @@
 <script setup lang="ts">
 import axios from 'axios';
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 
 type UploadStatus = 'ready' | 'loading' | 'success' | 'error'
 type checkFunction = (e: File) => boolean
 
-const { action, beforeUpload } = defineProps<{ action: string, beforeUpload?: checkFunction }>()
+const props = defineProps<{ action: string, beforeUpload?: checkFunction, uploaded?: any }>()
 const emits = defineEmits(['file-uploaded', 'file-uploaded-error'])
 
 const fileInput = ref<null | HTMLInputElement>(null)
-const fileStatus = ref<UploadStatus>('ready')
-const uploadedData = ref()
-
+const fileStatus = ref<UploadStatus>(props.uploaded ? 'success' : 'ready')
+const uploadedData = ref(props.uploaded)
+watch(() => props.uploaded, (newValue) => {
+  if (newValue) {
+    fileStatus.value = 'success'
+    uploadedData.value = newValue
+  }
+})
 
 const triggerUpload = () => {
   fileInput.value?.click()
@@ -25,8 +30,8 @@ const handleFileChange = (e: Event) => {
 
     const uploadedFile = files[0]
 
-    if (beforeUpload) {
-      const result = beforeUpload(uploadedFile)
+    if (props.beforeUpload) {
+      const result = props.beforeUpload(uploadedFile)
       if (!result) {
         return;
       }
@@ -35,7 +40,7 @@ const handleFileChange = (e: Event) => {
     const formData = new FormData()
     formData.append(uploadedFile.name, uploadedFile)
 
-    axios.post(action, formData, {
+    axios.post(props.action, formData, {
       headers: { 'Content-Type': 'multipart/form-data' }
     }).then((resp) => {
       uploadedData.value = resp.data
