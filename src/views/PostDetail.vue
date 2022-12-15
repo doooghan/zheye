@@ -9,10 +9,11 @@ import createMessage from '@/components/CreateMessage';
 const router = useRouter()
 const route = useRoute()
 const store = useMainStore()
+const currentPostId = route.params.id as string
 const isVisiableMoal = ref(false)
-const currentPost = computed<PostProps>(() => store.posts[0])
+const currentPost = computed(() => store.getCurrentPost(currentPostId))
 onMounted(() => {
-  store.fetchPost(route.params.id as string)
+  store.fetchPost(currentPostId)
 })
 
 const currentImageUrl = computed(() => {
@@ -44,7 +45,7 @@ const showEditArea = computed(() => {
 
 const hideAndDelte = () => {
   isVisiableMoal.value = false
-  store.deletePost(route.params.id as string).then((rawData: ResponseType<PostProps>) => {
+  store.deletePost(currentPostId).then((rawData: ResponseType<PostProps>) => {
     createMessage('删除成功, 2s后跳转', 'success', 2000)
     setTimeout(() => {
       router.push({ name: 'ColumnDetail', params: { id: rawData.data.column } })

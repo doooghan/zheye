@@ -2,22 +2,19 @@
 import { useRoute } from "vue-router";
 import PostListVue from "@/components/PostList.vue";
 import { useMainStore } from "@/stores";
-import { ref, watchEffect } from "vue";
-import { ColumnProps, PostProps } from "@/types";
+import { computed, onMounted, ref, watchEffect } from "vue";
 
 const store = useMainStore()
 const route = useRoute()
 
-const currentId = route.params.id as string
-store.fetchColumn(currentId)
-store.fetchPosts(currentId)
-const column = ref<ColumnProps | undefined>()
-const list = ref<PostProps[] | undefined>()
-
+const currentId = computed(() => route.params.id as string)
 watchEffect(() => {
-  column.value = store.getColumnById(currentId)
-  list.value = store.getPostsById(currentId)
+  store.fetchColumn(currentId.value)
+  store.fetchPosts(currentId.value)
 })
+const column = computed(() => store.getColumnById(currentId.value))
+const list = computed(() => store.getPostsById(currentId.value))
+
 </script>
 
 <template>

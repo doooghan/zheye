@@ -20,13 +20,16 @@ export const useMainStore = defineStore("main", {
 		getPostsById: (state) => {
 			return (id: string) => state.posts.filter((p) => p.column === id);
 		},
+		getCurrentPost: (state) => {
+			return (id: string) => state.posts.find((p) => p._id === id);
+		},
 	},
 	actions: {
 		async login(payload: any) {
 			const { data } = await axios.post("/user/login", {
 				...payload,
-				// email: "111@test.com",
-				// password: "111111",
+				email: "111@test.com",
+				password: "111111",
 			});
 			const { token } = data.data;
 			this.token = token;
@@ -36,6 +39,7 @@ export const useMainStore = defineStore("main", {
 			return data;
 		},
 		logout() {
+			this.user = { isLogin: false };
 			this.token = "";
 			localStorage.removeItem("token");
 			delete axios.defaults.headers.common?.Authorization;
@@ -59,6 +63,7 @@ export const useMainStore = defineStore("main", {
 		},
 
 		async createPost(newPost: PostProps) {
+			this.posts.push(newPost);
 			const { data } = await axios.post("/posts", newPost);
 			return data;
 		},
@@ -83,10 +88,20 @@ export const useMainStore = defineStore("main", {
 			return data;
 		},
 		async patchPost(id: string, newPost: PostProps) {
+			this.posts = this.posts.map((post) => {
+				if (post._id === newPost._id) {
+					return newPost;
+				} else {
+					return post;
+				}
+			});
 			const { data } = await axios.patch(`/posts/${id}`, newPost);
 			return data;
 		},
 		async deletePost(id: string) {
+			this.posts = this.posts.filter((post) => {
+				return post._id !== id;
+			});
 			const { data } = await axios.delete(`/posts/${id}`);
 			return data;
 		},

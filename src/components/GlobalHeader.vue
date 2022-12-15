@@ -3,9 +3,14 @@ import DropDownVue from './DropDown.vue';
 import DropDownItemVue from './DropDownItem.vue';
 import { RouterLink } from 'vue-router';
 import { UserProps } from "@/types";
+import { useMainStore } from '@/stores';
 
 const { user } = defineProps<{ user: UserProps }>()
+const store = useMainStore()
 
+const logout = () => {
+  store.logout()
+}
 </script>
 
 <template>
@@ -26,8 +31,11 @@ const { user } = defineProps<{ user: UserProps }>()
           <DropDownItemVue>
             <RouterLink to="/create" class="dropdown-item">新建文章</RouterLink>
           </DropDownItemVue>
-          <DropDownItemVue disabled><a href="#" class="dropdown-item">管理</a></DropDownItemVue>
-          <DropDownItemVue><a href="#" class="dropdown-item">退出登录</a></DropDownItemVue>
+          <DropDownItemVue>
+            <RouterLink :to="`/column/${user.column}`" class="dropdown-item">我的专栏</RouterLink>
+          </DropDownItemVue>
+          <DropDownItemVue disabled><a href="#" class="dropdown-item">管理账户</a></DropDownItemVue>
+          <DropDownItemVue><a href="#" class="dropdown-item" @click="logout">退出登录</a></DropDownItemVue>
 
         </DropDownVue>
       </li>
