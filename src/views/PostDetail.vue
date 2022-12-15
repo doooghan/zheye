@@ -1,10 +1,12 @@
 <script setup lang="ts">
 import { useMainStore } from '@/stores';
-import { ImageProps, PostProps, UserProps } from '@/types';
+import { ImageProps, PostProps, UserProps, ResponseType } from '@/types';
 import { computed, onMounted, ref, watchEffect } from 'vue';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import ModalVue from '@/components/Modal.vue';
+import createMessage from '@/components/CreateMessage';
 
+const router = useRouter()
 const route = useRoute()
 const store = useMainStore()
 const isVisiableMoal = ref(false)
@@ -40,6 +42,16 @@ const showEditArea = computed(() => {
   }
 })
 
+const hideAndDelte = () => {
+  isVisiableMoal.value = false
+  store.deletePost(route.params.id as string).then((rawData: ResponseType<PostProps>) => {
+    createMessage('删除成功, 2s后跳转', 'success', 2000)
+    setTimeout(() => {
+      router.push({ name: 'ColumnDetail', params: { id: rawData.data.column } })
+    }, 2000)
+  })
+
+}
 </script>
 
 <template>
@@ -61,7 +73,7 @@ const showEditArea = computed(() => {
       </div>
     </article>
     <ModalVue title="删除文章" :visiable="isVisiableMoal" @modal-on-close="(isVisiableMoal = false)"
-      @modal-on-confirm="(isVisiableMoal = false)">
+      @modal-on-confirm="hideAndDelte">
       <p>确认删除文章？</p>
     </ModalVue>
   </div>

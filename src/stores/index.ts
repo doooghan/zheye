@@ -60,7 +60,7 @@ export const useMainStore = defineStore("main", {
 
 		async createPost(newPost: PostProps) {
 			const { data } = await axios.post("/posts", newPost);
-			return data.data;
+			return data;
 		},
 
 		async fetchColumns() {
@@ -84,7 +84,11 @@ export const useMainStore = defineStore("main", {
 		},
 		async patchPost(id: string, newPost: PostProps) {
 			const { data } = await axios.patch(`/posts/${id}`, newPost);
-			return data.data;
+			return data;
+		},
+		async deletePost(id: string) {
+			const { data } = await axios.delete(`/posts/${id}`);
+			return data;
 		},
 	},
 });
