@@ -32,6 +32,8 @@ onMounted(() => {
       if (currentPost.image) {
         uploadedData.value = { data: currentPost.image }
       }
+      titleVal.value = currentPost.title
+      contentVal.value = currentPost.content
     })
   }
 })
