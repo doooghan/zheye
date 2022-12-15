@@ -51,12 +51,18 @@ const onFormSubmit = (isValid: boolean) => {
       if (imageId) {
         newPost.image = imageId
       }
-      store.createPost(newPost).then(() => {
+
+      const handle = () => {
         createMessage('创建成功，两秒后跳转', 'success');
         setTimeout(() => {
           router.push({ name: 'ColumnDetail', params: { id: column } })
         }, 2000)
-      })
+      }
+      if (isEditMode) {
+        store.patchPost(route.query.postId as string, newPost).then(handle)
+      } else {
+        store.createPost(newPost).then(handle)
+      }
     }
   }
 }
@@ -82,7 +88,7 @@ const onFileUploaded = (rawData: ResponseType<ImageProps>) => {
 
 <template>
   <div class="create-post-page">
-    <h5 class="my-4 text-center">创建文章</h5>
+    <h5 class="my-4 text-center">{{ isEditMode ? '修改文章' : '创建文章' }}</h5>
     <UploaderVue action="/upload" :before-upload="uploadCheck" @file-uploaded="onFileUploaded" :uploaded="uploadedData">
       <h2>点击上传头图</h2>
       <template #loading>
@@ -110,7 +116,7 @@ const onFileUploaded = (rawData: ResponseType<ImageProps>) => {
           v-model="contentVal" />
       </div>
       <template #submit>
-        <button type="submit" class="btn btn-danger">创建</button>
+        <button type="submit" class="btn btn-danger">{{ isEditMode ? '更新文章' : '创建文章' }}</button>
       </template>
     </ValidateFormVue>
   </div>

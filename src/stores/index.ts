@@ -82,5 +82,9 @@ export const useMainStore = defineStore("main", {
 			this.posts = [data.data];
 			return data;
 		},
+		async patchPost(id: string, newPost: PostProps) {
+			const { data } = await axios.patch(`/posts/${id}`, newPost);
+			return data.data;
+		},
 	},
 });
