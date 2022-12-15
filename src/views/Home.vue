@@ -8,7 +8,7 @@ const store = useMainStore()
 onMounted(() => {
   store.fetchColumns()
 })
-const { columns: list } = storeToRefs(store)
+
 </script>
 
 <template>
@@ -26,7 +26,7 @@ const { columns: list } = storeToRefs(store)
     </section>
     <h4 class="font-weight-bold text-center">发现精彩</h4>
 
-    <ColumnListVue :list="list" />
+    <ColumnListVue :list="store.getColumns" />
 
   </div>
 </template>

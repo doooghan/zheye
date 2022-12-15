@@ -13,7 +13,7 @@ watchEffect(() => {
   store.fetchPosts(currentId.value)
 })
 const column = computed(() => store.getColumnById(currentId.value))
-const list = computed(() => store.getPostsById(currentId.value))
+const list = computed(() => store.getPostsByCId(currentId.value))
 
 </script>
 

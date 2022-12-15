@@ -38,11 +38,15 @@ export interface GlobalErrorProps {
 	status: boolean;
 	message?: string;
 }
+interface ListProps<P> {
+	[id: string]: P;
+}
+
 export interface GlobalDataProps {
 	isLoading: boolean;
 	error: GlobalErrorProps;
 	token: string;
-	columns: ColumnProps[];
-	posts: PostProps[];
+	columns: ListProps<ColumnProps>;
+	posts: ListProps<PostProps>;
 	user: UserProps;
 }

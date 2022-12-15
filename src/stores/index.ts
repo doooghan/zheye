@@ -1,6 +1,7 @@
 import { createPinia, defineStore } from "pinia";
 import axios from "axios";
 import { GlobalDataProps, GlobalErrorProps, PostProps } from "@/types";
+import { arrToObj, objToArr } from "@/helpers";
 export const pinia = createPinia();
 
 export const useMainStore = defineStore("main", {
@@ -8,20 +9,24 @@ export const useMainStore = defineStore("main", {
 		isLoading: false,
 		error: { status: false },
 		token: localStorage.getItem("token") || "",
-		columns: [],
-		posts: [],
+		columns: {},
+		posts: {},
 		user: { isLogin: false },
 	}),
 
 	getters: {
-		getColumnById: (state) => {
-			return (id: string) => state.columns.find((c) => c._id === id);
+		getColumns: (state) => {
+			return objToArr(state.columns);
 		},
-		getPostsById: (state) => {
-			return (id: string) => state.posts.filter((p) => p.column === id);
+		getColumnById: (state) => {
+			return (id: string) => state.columns[id];
+		},
+		getPostsByCId: (state) => {
+			return (id: string) =>
+				objToArr(state.posts).filter((p) => p.column === id);
 		},
 		getCurrentPost: (state) => {
-			return (id: string) => state.posts.find((p) => p._id === id);
+			return (id: string) => state.posts[id];
 		},
 	},
 	actions: {
@@ -63,45 +68,38 @@ export const useMainStore = defineStore("main", {
 		},
 
 		async createPost(newPost: PostProps) {
-			this.posts.push(newPost);
+			this.posts[newPost._id as string] = newPost;
 			const { data } = await axios.post("/posts", newPost);
 			return data;
 		},
 
 		async fetchColumns() {
 			const { data } = await axios.get("/columns?currentPage=1&pageSize=6");
-			this.columns = data.data.list;
+			this.columns = arrToObj(data.data.list);
 		},
 		async fetchColumn(id: string) {
 			const { data } = await axios.get(`/columns/${id}`);
-			this.columns = [data.data];
+			this.columns[data.data._id] = data.data;
 		},
 		async fetchPosts(id: string) {
 			const { data } = await axios.get(
 				`/columns/${id}/posts?currentPage=1&pageSize=3`,
 			);
-			this.posts = data.data.list;
+			this.posts = arrToObj(data.data.list);
 		},
 		async fetchPost(id: string) {
 			const { data } = await axios.get(`/posts/${id}`);
-			this.posts = [data.data];
+			this.posts[data.data._id] = data.data;
 			return data;
 		},
 		async patchPost(id: string, newPost: PostProps) {
-			this.posts = this.posts.map((post) => {
-				if (post._id === newPost._id) {
-					return newPost;
-				} else {
-					return post;
-				}
-			});
+			this.posts[id] = newPost;
+
 			const { data } = await axios.patch(`/posts/${id}`, newPost);
 			return data;
 		},
 		async deletePost(id: string) {
-			this.posts = this.posts.filter((post) => {
-				return post._id !== id;
-			});
+			delete this.posts?.[id];
 			const { data } = await axios.delete(`/posts/${id}`);
 			return data;
 		},
