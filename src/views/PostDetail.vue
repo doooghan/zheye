@@ -3,9 +3,11 @@ import { useMainStore } from '@/stores';
 import { ImageProps, PostProps, UserProps } from '@/types';
 import { computed, onMounted, ref, watchEffect } from 'vue';
 import { useRoute } from 'vue-router';
+import ModalVue from '@/components/Modal.vue';
 
 const route = useRoute()
 const store = useMainStore()
+const isVisiableMoal = ref(false)
 const currentPost = computed<PostProps>(() => store.posts[0])
 onMounted(() => {
   store.fetchPost(route.params.id as string)
@@ -55,9 +57,13 @@ const showEditArea = computed(() => {
       <div v-if="showEditArea" class="btn-group mt-5">
         <RouterLink :to="{ name: 'CreatePost', query: { postId: currentPost._id } }" class="btn btn-success">修改
         </RouterLink>
-        <button class="btn btn-danger">删除</button>
+        <button class="btn btn-danger" @click.prevent="isVisiableMoal = true">删除</button>
       </div>
     </article>
+    <ModalVue title="删除文章" :visiable="isVisiableMoal" @modal-on-close="(isVisiableMoal = false)"
+      @modal-on-confirm="(isVisiableMoal = false)">
+      <p>确认删除文章？</p>
+    </ModalVue>
   </div>
 
 </template>
