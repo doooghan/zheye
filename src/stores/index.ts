@@ -2,6 +2,7 @@ import { createPinia, defineStore } from "pinia";
 import axios from "axios";
 import { GlobalDataProps, GlobalErrorProps, PostProps } from "@/types";
 import { arrToObj, objToArr } from "@/helpers";
+
 export const pinia = createPinia();
 
 export const useMainStore = defineStore("main", {
@@ -9,24 +10,24 @@ export const useMainStore = defineStore("main", {
 		isLoading: false,
 		error: { status: false },
 		token: localStorage.getItem("token") || "",
-		columns: {},
-		posts: {},
+		columns: { data: {}, isLoaded: false, total: 0 },
+		posts: { data: {}, loadedColumns: [] },
 		user: { isLogin: false },
 	}),
 
 	getters: {
 		getColumns: (state) => {
-			return objToArr(state.columns);
+			return objToArr(state.columns.data);
 		},
 		getColumnById: (state) => {
-			return (id: string) => state.columns[id];
+			return (id: string) => state.columns.data[id];
 		},
 		getPostsByCId: (state) => {
 			return (id: string) =>
-				objToArr(state.posts).filter((p) => p.column === id);
+				objToArr(state.posts.data).filter((p) => p.column === id);
 		},
 		getCurrentPost: (state) => {
-			return (id: string) => state.posts[id];
+			return (id: string) => state.posts.data[id];
 		},
 	},
 	actions: {
@@ -68,38 +69,62 @@ export const useMainStore = defineStore("main", {
 		},
 
 		async createPost(newPost: PostProps) {
-			this.posts[newPost._id as string] = newPost;
+			this.posts.data[newPost._id as string] = newPost;
 			const { data } = await axios.post("/posts", newPost);
 			return data;
 		},
 
-		async fetchColumns() {
-			const { data } = await axios.get("/columns?currentPage=1&pageSize=6");
-			this.columns = arrToObj(data.data.list);
-		},
-		async fetchColumn(id: string) {
-			const { data } = await axios.get(`/columns/${id}`);
-			this.columns[data.data._id] = data.data;
-		},
-		async fetchPosts(id: string) {
+		async fetchColumns(params: any = {}) {
+			// if (!this.columns.isLoaded) {
+			// 	const { data } = await axios.get(`/columns?currentPage=1&pageSize=6`);
+			// 	this.columns.data = arrToObj(data.data.list);
+			// 	this.columns.isLoaded = true;
+			// }
+			const { currentPage = 1, pageSize = 6 } = params;
 			const { data } = await axios.get(
-				`/columns/${id}/posts?currentPage=1&pageSize=3`,
+				`/columns?currentPage=${currentPage}&pageSize=${pageSize}`,
 			);
-			this.posts = arrToObj(data.data.list);
+			const { list, count } = data.data;
+			this.columns = {
+				data: { ...this.columns.data, ...arrToObj(list) },
+				total: count,
+				isLoaded: true,
+			};
+		},
+		async fetchColumn(cid: string) {
+			if (!this.columns.data[cid]) {
+				const { data } = await axios.get(`/columns/${cid}`);
+				this.columns.data[cid] = data.data;
+			}
+		},
+		async fetchPosts(cid: string) {
+			if (!this.posts.loadedColumns.includes(cid)) {
+				const { data } = await axios.get(
+					`/columns/${cid}/posts?currentPage=1&pageSize=3`,
+				);
+				this.posts.data = { ...this.posts.data, ...arrToObj(data.data.list) };
+				this.posts.loadedColumns.push(cid);
+			}
 		},
 		async fetchPost(id: string) {
-			const { data } = await axios.get(`/posts/${id}`);
-			this.posts[data.data._id] = data.data;
-			return data;
+			const currentPost = this.posts.data[id];
+			// rome-ignore lint: reason
+			if (!currentPost || !currentPost.content) {
+				const { data } = await axios.get(`/posts/${id}`);
+				this.posts.data[id] = data.data;
+				return data;
+			} else {
+				return Promise.resolve({ data: currentPost });
+			}
 		},
 		async patchPost(id: string, newPost: PostProps) {
-			this.posts[id] = newPost;
+			this.posts.data[id] = newPost;
 
 			const { data } = await axios.patch(`/posts/${id}`, newPost);
 			return data;
 		},
 		async deletePost(id: string) {
-			delete this.posts?.[id];
+			delete this.posts.data?.[id];
 			const { data } = await axios.delete(`/posts/${id}`);
 			return data;
 		},
