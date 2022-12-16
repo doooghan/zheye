@@ -9,11 +9,12 @@ onMounted(() => {
   store.fetchColumns({ currentPage: 1, pageSize: 3 })
 })
 
+const currentPage = computed(() => store.columns.currentPage)
 const total = computed(() =>
   store.columns.total
 )
 
-const { loadMorePage, isLastPage } = useLoadMore('fetchColumns', total, { currentPage: 2, pageSize: 3 })
+const { loadMorePage, isLastPage } = useLoadMore('fetchColumns', total, { currentPage: (currentPage.value > 2 ? currentPage.value + 1 : 2), pageSize: 3 })
 
 </script>
 

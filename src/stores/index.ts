@@ -10,7 +10,7 @@ export const useMainStore = defineStore("main", {
 		isLoading: false,
 		error: { status: false },
 		token: localStorage.getItem("token") || "",
-		columns: { data: {}, isLoaded: false, total: 0 },
+		columns: { data: {}, currentPage: 0, total: 0 },
 		posts: { data: {}, loadedColumns: [] },
 		user: { isLogin: false },
 	}),
@@ -75,21 +75,18 @@ export const useMainStore = defineStore("main", {
 		},
 
 		async fetchColumns(params: any = {}) {
-			// if (!this.columns.isLoaded) {
-			// 	const { data } = await axios.get(`/columns?currentPage=1&pageSize=6`);
-			// 	this.columns.data = arrToObj(data.data.list);
-			// 	this.columns.isLoaded = true;
-			// }
 			const { currentPage = 1, pageSize = 6 } = params;
-			const { data } = await axios.get(
-				`/columns?currentPage=${currentPage}&pageSize=${pageSize}`,
-			);
-			const { list, count } = data.data;
-			this.columns = {
-				data: { ...this.columns.data, ...arrToObj(list) },
-				total: count,
-				isLoaded: true,
-			};
+			if (currentPage > this.columns.currentPage) {
+				const { data } = await axios.get(
+					`/columns?currentPage=${currentPage}&pageSize=${pageSize}`,
+				);
+				const { list, count } = data.data;
+				this.columns = {
+					data: { ...this.columns.data, ...arrToObj(list) },
+					total: count,
+					currentPage,
+				};
+			}
 		},
 		async fetchColumn(cid: string) {
 			if (!this.columns.data[cid]) {

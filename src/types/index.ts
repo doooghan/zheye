@@ -46,7 +46,7 @@ export interface GlobalDataProps {
 	isLoading: boolean;
 	error: GlobalErrorProps;
 	token: string;
-	columns: { data: ListProps<ColumnProps>; isLoaded: boolean; total: number };
+	columns: { data: ListProps<ColumnProps>; currentPage: 0; total: number };
 	posts: { data: ListProps<PostProps>; loadedColumns: string[] };
 	user: UserProps;
 }
